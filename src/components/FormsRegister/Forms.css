@@ -1,0 +1,25 @@
+.input__style {
+    width: 500px;
+}
+
+.MuiButtonBase-root-58 {
+    width: 300px;
+}
+
+.MuiButtonBase-root-58 {
+    margin-top: 30px;
+}
+
+.input__button {
+    margin-bottom: 30px;
+}
+
+@media only screen and (max-width : 600px) {
+    .input__style {
+        width: 100%;
+    }
+
+    .MuiButtonBase-root-58 {
+        width: 100%;
+    }
+}
