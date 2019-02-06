@@ -6,9 +6,8 @@ import {Link} from 'react-router-dom';
 import './Tabs.css'
 
 
-
 export default () => {
-
+  const login = window.localStorage.getItem('rr_login');
     return (
       <div className="Tabs__block">
         <AppBar>
@@ -16,7 +15,7 @@ export default () => {
             <Link className="Link__not" to="/"><Tab label="О нас" /></Link>
             <Link className="Link__not" to="/Login"><Tab label="Логин" /></Link>
             <Link className="Link__not" to="/Registration"><Tab label="Регестрация" /></Link>
-            <Link className="Link__not" to="/Profile"><Tab label="Профиль" /></Link>
+            {login ? <Link className="Link__not" to="/Profile"><Tab label="Профиль" /></Link> : null}
           </Tabs>
         </AppBar>
       </div>

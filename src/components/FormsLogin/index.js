@@ -2,6 +2,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import axios from 'axios'
+// import decode from 'jwt-decode';
 
 const styles = theme => ({
 
@@ -13,36 +15,72 @@ class TextFields extends React.Component {
     state = {
         LoginName: '',
         LoginEmail: '',
-        LoginPassword: ''
+        LoginPassword: '',
+        isBlockNameLog: false,
+        isBlockEmailLog: false,
+        isBlockPasswordLog: false
     }
+
 
     handleChange = (e) => {
         this.setState({ [e.target.id]: e.target.value})
 
     }
 
+
     handleSubmit = () => {
-        console.log(this.state)
-        // window.localStorage.setItem('rr_login', this.state.LoginName)
-        // this.props.checkLogin()
-        console.log('local', localStorage)
-        fetch('http://localhost:4000/login', { 
-            method: 'POST', 
-            headers: { 
-                'Content-Type': 'application/x-www-form-urlencoded' 
-            }, 
-            body: JSON.stringify({ name: this.state.LoginName, password: this.state.LoginPassword, email: this.state.LoginEmail }) 
-}) 
+
+        const {LoginEmail, LoginName, LoginPassword} = this.state
+        const validEmail = LoginEmail.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        if(LoginEmail.length === 0 || validEmail === null) {
+            this.setState({ isBlockEmailLog: true})
+        } 
+        if(LoginEmail.length > 0 && validEmail !== null) {
+            this.setState({ isBlockEmailLog: false})
+        } 
+        if(LoginName.length < 4) {
+            this.setState({ isBlockNameLog: true})
+        }
+        if(LoginName.length >= 4) {
+            this.setState({ isBlockNameLog: false})
+        }
+        if(LoginPassword.length < 6) {
+            this.setState({ isBlockPasswordLog: true})
+        }
+        if(LoginPassword.length >= 6) {
+            this.setState({ isBlockPasswordLog: false})
+        }
+
+        let data = {
+            name: this.state.LoginName,
+            email: this.state.LoginEmail,
+            password: this.state.LoginPassword,
+        }
+        axios.post('http://localhost:4000/login', data)
+        .then((response) => {
+            console.log('LOG', response)
+            window.localStorage.setItem('rr_login', response.data.token)
+            this.props.checkLogin(response.data.token)
+            // const decoded = decode(response.data.token)
+            // console.log('DECODE', decoded)
+
+        })
+        .then((error) => {
+            console.log(error)
+        })
     }
 
   render() {
+    console.log('TOKEN', window.localStorage.getItem('rr_login'));
     const { classes } = this.props;
-    const {LoginName, LoginEmail, LoginPassword} = this.state
+    const {LoginName, LoginEmail, LoginPassword, isBlockNameLog, isBlockEmailLog, isBlockPasswordLog} = this.state
 
     return (
         <div className='Tabs__style'>
             <form className={classes.container} noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
                 <TextField
+                error = {isBlockNameLog ? true : false}
+                inputProps={{ maxLength: 20 }}
                 label="Name"
                 className='input__style'
                 margin="dense"
@@ -51,6 +89,8 @@ class TextFields extends React.Component {
                 onChange={this.handleChange}
                 /><br />
                 <TextField
+                error = {isBlockEmailLog ? true : false}
+                inputProps={{ maxLength: 30 }}
                 label="Email"
                 type="email"
                 className='input__style'
@@ -60,6 +100,8 @@ class TextFields extends React.Component {
                 onChange={this.handleChange}
                 /><br />
                 <TextField
+                error = {isBlockPasswordLog ? true : false}
+                inputProps={{ maxLength: 30 }}
                 label="Password"
                 type="password"
                 className='input__style'
