@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import axios from 'axios'
+import axios from '../../axios.config'
 import FormsInputReg from '../FormsInputReg'
 import './Forms.css'
 
@@ -56,14 +56,13 @@ class TextFields extends React.Component {
             password: this.state.RegisterPassword,
         }
         console.log(this.state)
-        axios.post('http://localhost:4000/registration', data)
+        axios.post('/registration', data)
         .then((response) => {
             console.log('REG', response)
         })
         .then((error) => {
             console.log(error)
         })
-        // this.props.clickHistory()
     }
 
   render() {

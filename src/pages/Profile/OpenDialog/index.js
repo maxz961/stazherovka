@@ -6,14 +6,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
+import AdminSelect from '../AdminSelect'
 import './OpenDialog.css'
 
 const styles = theme => ({
@@ -31,11 +28,14 @@ class DialogSelect extends React.Component {
   state = {
     open: false,
     age: '',
+    target: this.props.isAdmin
   };
 
-//   handleChange = name => event => {
-//     this.setState({ [name]: Number(event.target.value) });
-//   };
+  adminJump = (target) => {
+    this.setState({
+      target
+    })
+  }
 
 handleChange = (e) => {
     this.props.propsHuck(e.target)           
@@ -47,15 +47,18 @@ handleChange = (e) => {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.notSave()
   };
 
   openSave = () => {
+    const target = this.state.target
     this.setState({ open: false });
-    this.props.saveClick() 
+    this.props.saveClick(target) 
   }
 
   render() {
     const { classes, nameProfile, infoProfile } = this.props;
+    const {isAdmin} = this.props
 
     return (
       <div>
@@ -94,6 +97,7 @@ handleChange = (e) => {
                 />
 
               </FormControl>
+              <AdminSelect isAdmin={isAdmin} adminJump={this.adminJump}/>
             </form>
           </DialogContent>
           <DialogActions>

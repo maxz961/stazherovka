@@ -2,8 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import axios from 'axios'
-// import decode from 'jwt-decode';
+import axios from '../../axios.config.js'
 
 const styles = theme => ({
 
@@ -56,14 +55,11 @@ class TextFields extends React.Component {
             email: this.state.LoginEmail,
             password: this.state.LoginPassword,
         }
-        axios.post('http://localhost:4000/login', data)
+        axios.post('/login', data)
         .then((response) => {
             console.log('LOG', response)
             window.localStorage.setItem('rr_login', response.data.token)
-            this.props.checkLogin(response.data.token)
-            // const decoded = decode(response.data.token)
-            // console.log('DECODE', decoded)
-
+            this.props.checkLogin(response.data)
         })
         .then((error) => {
             console.log(error)

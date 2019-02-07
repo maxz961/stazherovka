@@ -1,12 +1,15 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
-import { Route, Redirect } from 'react-router'
+import {Redirect } from 'react-router'
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
 import OpenDialog from './OpenDialog'
+import axios from '../../axios.config'
+import AdminProfile from './AdminProfile'
 import './Profile.css'
+
+const id = window.localStorage.getItem('rr_id')
+const token = window.localStorage.getItem('rr_login')
 
 
 class Profile extends React.Component {
@@ -15,7 +18,14 @@ class Profile extends React.Component {
         oldName: 'Имя пользователя',
         oldInfo: 'Информация пользователя',
         nameProfile: 'Имя пользователя',
-        infoProfile: 'Информация пользователя'
+        infoProfile: 'Информация пользователя',
+        isAdmin: false,
+        newAdmin: false
+    }
+
+    checkUsers = (login) => {
+        console.log('login', login);
+        
     }
 
     handleSubmit = () => {
@@ -28,20 +38,66 @@ class Profile extends React.Component {
 
     }
 
-    saveClick = () => {
+    saveClick = (target) => {
         const {nameProfile, infoProfile} = this.state
+        
+        // axios.put(`/user/${id}`, token, {isAdmin: true})
+        // .then((response) => {
+        //     console.log('PUT', response)
+        //     this.get_profile(id, token)
+        // })
+        // .then((error) => {
+        //     console.log('PUTR', error);
+        // })
+        
         this.setState({
-            ...this.state, oldName: nameProfile, oldInfo: infoProfile
+            ...this.state, oldName: nameProfile, oldInfo: infoProfile, newAdmin: target.value, isAdmin: target.value
         })
+    }
+
+    notSave = () => {
+        const {oldName, oldInfo} = this.state
+        this.setState({
+            ...this.state, nameProfile: oldName, infoProfile: oldInfo
+        })
+    }
+
+    get_profile = (id, token) => {
+        axios.get(`/user/${id}`, token)
+        .then((response) => {
+            console.log('RES', response)
+            this.setState({
+                oldName: response.data.name,
+                oldInfo: response.data.email,
+                nameProfile: response.data.name,
+                infoProfile: response.data.email,
+                isAdmin: response.data.isAdmin,
+                newAdmin: response.data.isAdmin
+            })
+        })
+        .then((error) => {
+            console.log(error)
+        })
+    }
+
+    componentDidMount() {
+        this.get_profile(id, token)
     }
 
 
     render() {
-        const {nameProfile, infoProfile, oldName, oldInfo} = this.state
+        console.log('state', this.state)
+        
+        const {nameProfile, infoProfile, oldName, oldInfo, isAdmin, newAdmin} = this.state
         const token = window.localStorage.getItem('rr_login')
-        console.log('TOKEN', window.localStorage.getItem('rr_login'));
+        const isToogle = isAdmin === 'true' ? true : false
+        const isRedirect = newAdmin === 'true' ? true : false
+
+
+        if(isRedirect === false || newAdmin === false) {
    
         return token === null ? ( <Redirect to="/"/>) : (
+
 
             <div className="Pages__center">
                 <h1>Страница профиля</h1>
@@ -51,7 +107,10 @@ class Profile extends React.Component {
                 </Grid>
                 <h1>{oldName}</h1>
                 <p>{oldInfo}</p>
-                <OpenDialog propsHuck={this.handleChange} nameProfile={nameProfile} infoProfile={infoProfile} saveClick={this.saveClick}/>
+                <p>Статус Пользователя: {newAdmin === 'true' ? ' Админ' : ' Пользователь'}</p>
+                <OpenDialog  isAdmin={isToogle}
+                 propsHuck={this.handleChange} nameProfile={nameProfile}
+                  infoProfile={infoProfile} saveClick={this.saveClick} notSave={this.notSave}/>
 
                 <Button type="submit"
                     variant="outlined" 
@@ -61,6 +120,12 @@ class Profile extends React.Component {
            </Button>
             </div>
         )
+        }
+
+        if(isRedirect === true || newAdmin === true) {
+            return token === null ? ( <Redirect to="/"/>) : ( <AdminProfile />)
+                   
+        }
     }
 }
 

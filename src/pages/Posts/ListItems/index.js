@@ -1,11 +1,15 @@
 import React from 'react'
 import axios from '../../../axios.config'
+import ListItem from './ListItem'
 
 const id = window.localStorage.getItem('rr_id')
 const token = window.localStorage.getItem('rr_login')
 
-class AdminProfile extends React.Component {
+class ListItems extends React.Component {
 
+    state = {
+        data: []
+    }
 
     componentDidMount() {
         this.get_profile(id, token)
@@ -33,7 +37,10 @@ class AdminProfile extends React.Component {
     get_allposts = () => {
         axios.get(`/posts`)
         .then((response) => {
-            console.log('USERS', response)
+            console.log('POSTS', response)
+            this.setState({
+                data: response.data
+            })
         })
         .then((error) => {
             console.log(error)
@@ -42,12 +49,17 @@ class AdminProfile extends React.Component {
 
 
     render() {
+       console.log('state', this.state.data)
+       const {data} = this.state
+       const ItemElem = data.map((item) => {
+           return <ListItem key={item._id} title={item.title} image={item.image} description={item.description} created_user={item.created_user}/>
+       })
         return (
             <div>
-                <h1>Страница админа</h1>
+               {ItemElem}
             </div>
         )
     }
 }
 
-export default AdminProfile
+export default ListItems

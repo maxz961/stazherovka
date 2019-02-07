@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { Redirect } from 'react-router'
 import FormsLogin from '../../components/FormsLogin'
 import './Login.css'
 
@@ -7,10 +6,11 @@ import './Login.css'
 class Login extends Component {
 
     checkLogin = (login) => {
-        console.log('TOKLOG', login)
-        if(login !== null) {
+        console.log('TOKLOG', login.user._id)
+        if(login.token !== null) {
             console.log('Прыгаем', this.context)
-            this.props.history.push('/Profile')
+            this.props.history.push('/Profile/:id')
+            window.localStorage.setItem('rr_id', login.user._id)
         }
         if(login !== 'admin') {
             console.log('Не прыгаем')

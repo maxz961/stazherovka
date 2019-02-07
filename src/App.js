@@ -6,16 +6,12 @@ import Obautus from './pages/Obautus'
 import Profile from './pages/Profile'
 import Registration from './pages/Registration'
 import Tabs from './components/Tabs'
+import Posts from './pages/Posts'
+import PostPage from './pages/PostPage'
+
 
 
 class App extends Component {
-
-  // checkLogin = () => {
-  //   const login = window.localStorage.getItem('rr_login')
-  //   if(login === 'admin') {
-  //     console.log('пропусти')
-  //   }
-  // }
 
   render() {
     return (
@@ -26,7 +22,9 @@ class App extends Component {
         <Tabs />
           <Route exact path="/" component={Obautus} />
           <Route path="/Login" component={Login} />
-          <Route path="/Profile" component={Profile} />
+          <Route path="/Posts" component={Posts} />
+          <Route path="/Post/:post" component={PostPage} />
+          <Route path="/Profile/:id" component={Profile}/>
           <Route path="/Registration" component={Registration} />
         </div>
       </Router>
