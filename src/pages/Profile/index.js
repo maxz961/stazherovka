@@ -30,7 +30,8 @@ class Profile extends React.Component {
 
     handleSubmit = () => {
         window.localStorage.clear()
-        this.props.history.push('/')
+        this.props.relogKey()
+        // this.props.history.push('/')
     }
 
     handleChange = (target) => {
@@ -41,14 +42,13 @@ class Profile extends React.Component {
     saveClick = (target) => {
         const {nameProfile, infoProfile} = this.state
         
-        // axios.put(`/user/${id}`, token, {isAdmin: true})
-        // .then((response) => {
-        //     console.log('PUT', response)
-        //     this.get_profile(id, token)
-        // })
-        // .then((error) => {
-        //     console.log('PUTR', error);
-        // })
+        axios.post(`/post`, token, )
+        .then((response) => {
+            console.log('CREATEPOST', response)
+        })
+        .then((error) => {
+            console.log('PUTR', error);
+        })
         
         this.setState({
             ...this.state, oldName: nameProfile, oldInfo: infoProfile, newAdmin: target.value, isAdmin: target.value

@@ -1,0 +1,11 @@
+.list__itemsblock {
+    position: relative;
+}
+
+#add__icon {
+    position: fixed;
+    width: 5%;
+    height: 5%;
+    bottom: 30px;
+    right: 30px;
+}

@@ -13,19 +13,37 @@ import PostPage from './pages/PostPage'
 
 class App extends Component {
 
+  state = {
+    tokenApp: window.localStorage.getItem('rr_login')
+  }
+
+  relogKey = () => {
+    console.log('RELOG')
+    this.setState({
+      tokenApp: null
+    })
+  }
+
+  relogkeyLogin = () => {
+    this.setState({
+      tokenApp: window.localStorage.getItem('rr_login')
+    })
+  }
+
   render() {
+    const {tokenApp} = this.state
     return (
 
 
       <Router>
         <div>
-        <Tabs />
+        <Tabs tokenApp={tokenApp}/>
           <Route exact path="/" component={Obautus} />
-          <Route path="/Login" component={Login} />
-          <Route path="/Posts" component={Posts} />
-          <Route path="/Post/:post" component={PostPage} />
-          <Route path="/Profile/:id" component={Profile}/>
+          <Route path="/Login" render={() => <Login tokenApp={tokenApp} relogkeyLogin={this.relogkeyLogin}/>} />
+          <Route exact path="/Posts" component={Posts} />
+          <Route path="/Profile/:id" render={() => <Profile relogKey={this.relogKey}/>}/>
           <Route path="/Registration" component={Registration} />
+          <Route path={`/Posts/:post`} component={PostPage} />
         </div>
       </Router>
     );

@@ -67,7 +67,6 @@ class TextFields extends React.Component {
     }
 
   render() {
-    console.log('TOKEN', window.localStorage.getItem('rr_login'));
     const { classes } = this.props;
     const {LoginName, LoginEmail, LoginPassword, isBlockNameLog, isBlockEmailLog, isBlockPasswordLog} = this.state
 

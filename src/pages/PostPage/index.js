@@ -1,58 +1,64 @@
 import React from 'react'
+import ItemCard from './ItemCard';
+import axios from '../../axios.config'
+import CommentList from './CommentList'
+import './PostPage.css'
 
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
-const styles = {
-  card: {
-    maxWidth: 345,
-  },
-  media: {
-    objectFit: 'cover',
-  },
-};
+class PostPage extends React.Component {
 
-function PostPage(props) {
-  const { classes } = props;
-  return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt="Contemplative Reptile"
-          className={classes.media}
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>
-  );
+  state = {
+    data: [],
+    comments: []
+  }
+
+  get_post = (id, token) => {
+    axios.get(`/posts/${id}`, token)
+    .then((response) => {
+        this.setState({
+          ...this.state, data: response.data
+        })
+    })
+    .then((error) => {
+        console.log(error)
+    })
 }
 
+get_allcomment = (id) => {
+  axios.get(`/post/${id}/comments`)
+  .then((response) => {
+      console.log('AllComment',response)
+      this.setState({
+        ...this.state, comments: response.data
+      })
+  })
+  .then((error) => {
+      console.log(error)
+  })
+}
 
-export default withStyles(styles)(PostPage);
+  componentDidMount() {
+    const id = this.props.match.params.post
+    const token = window.localStorage.getItem('rr_login');
+    this.get_post(id, token)
+    this.get_allcomment(id)
+    
+  }
+
+  render() {
+    const {data, comments} = this.state
+    const itemComment = comments.map((item) => {
+      return <CommentList key={item._id} item={item}/>
+    })
+    return (
+      <div>
+        <ItemCard data={data}/>
+        <div className='comment__list'>
+        {comments.length > 0 ? itemComment : <h1>Нет комментариев</h1>}
+        </div>
+      </div>
+    )
+  }
+}
+
+export default PostPage

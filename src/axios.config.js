@@ -1,5 +1,5 @@
 const axios = require('axios');
 export default axios.create({
-    baseURL:  'http://c8bc0917.ngrok.io',
+    baseURL:  'http://192.168.88.189:4000',
     headers: {'x-access-token': `Bearer ${window.localStorage.getItem('rr_login')}`}
 });

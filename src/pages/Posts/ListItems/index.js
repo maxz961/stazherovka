@@ -1,43 +1,38 @@
 import React from 'react'
 import axios from '../../../axios.config'
 import ListItem from './ListItem'
-
-const id = window.localStorage.getItem('rr_id')
-const token = window.localStorage.getItem('rr_login')
+import {Link} from 'react-router-dom'
+import DialogSelect from './OpenCreatePost'
+import './ListItems.css'
 
 class ListItems extends React.Component {
 
     state = {
-        data: []
+        data: [],
+        description: '',
+        image: '',
+        titile: '',
+        created_user: ''
     }
 
     componentDidMount() {
-        this.get_profile(id, token)
         this.get_allposts()
     }
 
-    get_profile = (id, token) => {
-        axios.get(`/user/${id}`, token)
-        .then((response) => {
-            console.log('RES', response)
-            this.setState({
-                oldName: response.data.name,
-                oldInfo: response.data.email,
-                nameProfile: response.data.name,
-                infoProfile: response.data.email,
-                isAdmin: response.data.isAdmin,
-                newAdmin: response.data.isAdmin
-            })
+    notSave = () => {
+        this.setState({
+            ...this.state, description: '', image: '',  titile: '', created_user: ''
         })
-        .then((error) => {
-            console.log(error)
-        })
+    }
+
+    saveClick = () => {
+        console.log('SAVE')
     }
 
     get_allposts = () => {
         axios.get(`/posts`)
         .then((response) => {
-            console.log('POSTS', response)
+            console.log('AllPosts',response.data)
             this.setState({
                 data: response.data
             })
@@ -48,18 +43,34 @@ class ListItems extends React.Component {
     }
 
 
+
+    propsHuck = (target) => {
+        this.setState({
+            [target.id]: target.value
+        })
+    }
+
+    
     render() {
-       console.log('state', this.state.data)
-       const {data} = this.state
-       const ItemElem = data.map((item) => {
-           return <ListItem key={item._id} title={item.title} image={item.image} description={item.description} created_user={item.created_user}/>
-       })
+        console.log('CREATESTATE', this.state)
+        const {data} = this.state
+        const ItemElem = data.map((item) => {
+            return (<Link key={item._id} to={`/Posts/${item._id}`}>
+                <ListItem id={item._id}
+                    title={item.title} image={item.image}
+                    description={item.description}
+                    created_user={item.created_user}
+                />
+            </Link>);
+       });
         return (
-            <div>
-               {ItemElem}
+            <div className='list__itemsblock'>
+                {ItemElem}
+                <DialogSelect propsHuck={this.propsHuck} notSave={this.notSave} saveClick={this.saveClick}/>
             </div>
+            
         )
     }
 }
 
-export default ListItems
+export default ListItems;

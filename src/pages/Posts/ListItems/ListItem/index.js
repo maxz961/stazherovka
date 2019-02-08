@@ -18,6 +18,7 @@ const styles = {
 
 function ListItem(props) {
   const { classes, title, image, description, created_user} = props;
+  
   return (
     <Card className='list__item'>
       <CardActionArea>
@@ -39,6 +40,7 @@ function ListItem(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
+   
     </Card>
   );
 }
