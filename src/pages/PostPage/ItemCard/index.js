@@ -5,8 +5,11 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import axios from '../../../axios.config'
+
+import DeletePage from '../DeletePage'
+import EditPosts from '../EditPosts'
 
 const styles = {
   card: {
@@ -20,7 +23,56 @@ const styles = {
 class PostPage extends React.Component {
 
     state = {
-        stateData: []
+        stateData: [],
+        description: '',
+        titile: '',
+        imageFile: '',
+        relogItemCard: false
+    }
+
+    propsHuckEdit = (target) => {
+      this.setState({
+        [target.id]: target.value
+      })
+    }
+
+    saveEditPost = () => {
+      console.log('STATE', this.state)
+      const id = this.state.stateData._id
+
+      const fd = new FormData()
+      fd.append('imageFile', this.state.imageFile)
+      fd.append('title', this.state.titile)
+      fd.append('description', this.state.description)
+
+      axios.put(`/post/${id}`, fd)
+      .then(res => {
+        console.log(res)
+      })
+      .then(err => {
+        console.log(err)
+      })
+    }
+
+    editImage = (image) => {
+      this.setState({
+        imageFile: image
+      })
+    }
+
+    deletePost = () => {
+      const token = window.localStorage.getItem('rr_login')
+      const id = this.state.stateData._id
+      console.log(this.state.stateData.created_user == window.localStorage.getItem('rr_id'))
+      axios.delete(`/post/${id}`)
+      .then( res => {
+        console.log(res)
+        // this.props.goTo('/Posts')
+      })
+      .then(err => {
+        console.log(err)
+      })
+      
     }
 
     componentDidUpdate(prevProps) {
@@ -35,7 +87,6 @@ class PostPage extends React.Component {
     render() {
         const { stateData} = this.state
   const { classes} = this.props;
-  console.log('stateData', stateData)
   return (
     <Card>
         <h1>{stateData.description}</h1>
@@ -58,12 +109,11 @@ class PostPage extends React.Component {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
+
+          <DeletePage deletePost={this.deletePost} />
+          <EditPosts propsHuckEdit={this.propsHuckEdit} saveEditPost={this.saveEditPost} editImage={this.editImage}/>
+
+
       </CardActions>
     </Card>
     

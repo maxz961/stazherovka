@@ -76,7 +76,7 @@ class Profile extends React.Component {
             })
         })
         .then((error) => {
-            console.log(error)
+            console.log('#################3',error)
         })
     }
 

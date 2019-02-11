@@ -1,3 +1,13 @@
 .comment__list {
     margin-top: 50px;
+    text-align: center;
+}
+
+.post__page__body {
+    margin: 0 auto;
+}
+
+.btn__comment__post {
+    margin: 0 auto;
+    width: 30%;
 }

@@ -9,8 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
-import axios from '../../../../axios.config'
+import Icon from '@material-ui/core/Icon';
 
 const styles = theme => ({
   container: {
@@ -25,21 +24,20 @@ const styles = theme => ({
 
 class DialogSelect extends React.Component {
   state = {
-    open: false,
-    age: '',
-    selectedFile: null
+    open: false
   };
 
 
   fileSelectedHandler = e => {
     console.log('FILe', e.target.files[0])
-    this.setState({
-      selectedFile: e.target.files[0]
-    })
+    // this.setState({
+    //   selectedFile: e.target.files[0]
+    // })
+    this.props.editImage(e.target.files[0])
   }
 
-handleChange = (e) => {
-    this.props.propsHuck(e.target)           
+handleChangeEdit = (e) => {
+    this.props.propsHuckEdit(e.target)           
 }
 
   handleClickOpen = () => {
@@ -48,26 +46,11 @@ handleChange = (e) => {
 
   handleClose = () => {
     this.setState({ open: false });
-    this.props.notSave()
   };
 
-  openSave = () => { 
-    const fd = new FormData()
-    fd.append('imageFile', this.state.selectedFile)
-    fd.append('title', 'sssssssss')
-    fd.append('description', 'sssssssss')
-
-    axios.post('/post', fd)
-    .then(res => {
-      console.log(res)
-    })
-    .then(err => {
-      console.log(err)
-    })
-
-
+  openSaveEdit = () => { 
     this.setState({ open: false });
-    this.props.saveClick() 
+    this.props.saveEditPost()
   }
 
   render() {
@@ -75,11 +58,9 @@ handleChange = (e) => {
 
     return (
       <div>
-                <div  id='add__icon' onClick={this.handleClickOpen}>
-                    <Fab color="primary" aria-label="Add">
-                        <AddIcon />
-                    </Fab>
-                </div>
+                <Fab size='large' onClick={this.handleClickOpen} color="secondary" aria-label="Edit" className={classes.fab}>
+                    <Icon fontSize="small">edit_icon</Icon>
+                </Fab>
         <Dialog
           disableBackdropClick
           disableEscapeKeyDown
@@ -97,7 +78,7 @@ handleChange = (e) => {
                 className='input__style'
                 margin="dense"
                 id="description"
-                onChange={this.handleChange}
+                onChange={this.handleChangeEdit}
                 /><br />
                 <TextField
                 inputProps={{ maxLength: 30 }}
@@ -106,14 +87,14 @@ handleChange = (e) => {
                 className='input__style'
                 margin="dense"
                 id="titile"
-                onChange={this.handleChange}
+                onChange={this.handleChangeEdit}
                 />
                 <label htmlFor="outlined-button-file">
                     <Button
                         variant="contained"
                         component="label">
                             Upload File
-                        <input type="file" style={{ display: "none" }} onChange={this.fileSelectedHandler} />
+                        <input type="file" id='imageFile' style={{ display: "none" }} onChange={this.fileSelectedHandler} />
                     </Button>
                  </label>
 
@@ -124,7 +105,7 @@ handleChange = (e) => {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.openSave} color="primary">
+            <Button onClick={this.openSaveEdit} color="primary">
               Ok
             </Button>
           </DialogActions>

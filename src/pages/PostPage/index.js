@@ -1,7 +1,10 @@
 import React from 'react'
 import ItemCard from './ItemCard';
 import axios from '../../axios.config'
+
+
 import CommentList from './CommentList'
+import AddComment from './AddComment'
 import './PostPage.css'
 
 
@@ -9,7 +12,8 @@ class PostPage extends React.Component {
 
   state = {
     data: [],
-    comments: []
+    comments: [],
+    textareaComm: ''
   }
 
   get_post = (id, token) => {
@@ -18,6 +22,26 @@ class PostPage extends React.Component {
         this.setState({
           ...this.state, data: response.data
         })
+    })
+    .then((error) => {
+        console.log(error)
+    })
+}
+
+saveCommentPost = (target) => {
+  this.setState({
+    [target.id]: target.value
+  })
+}
+
+clickSaveCommPost = () => {
+  console.log('STATECOMM', this.state)
+  const id = this.props.match.params.post
+  const fd = new FormData()
+  fd.append('content', this.state.textareaComm)
+  axios.post(`/post/${id}/comment`)
+    .then((response) => {
+        console.log(response)
     })
     .then((error) => {
         console.log(error)
@@ -37,6 +61,10 @@ get_allcomment = (id) => {
   })
 }
 
+goTo = (page) => {
+  this.props.history.push(page)
+}
+
   componentDidMount() {
     const id = this.props.match.params.post
     const token = window.localStorage.getItem('rr_login');
@@ -51,11 +79,12 @@ get_allcomment = (id) => {
       return <CommentList key={item._id} item={item}/>
     })
     return (
-      <div>
-        <ItemCard data={data}/>
+      <div className='post__page__body'>
+        <ItemCard goTo={this.goTo} data={data}/>
         <div className='comment__list'>
         {comments.length > 0 ? itemComment : <h1>Нет комментариев</h1>}
         </div>
+        <AddComment saveCommentPost={this.saveCommentPost} clickSaveCommPost={this.clickSaveCommPost}/>
       </div>
     )
   }

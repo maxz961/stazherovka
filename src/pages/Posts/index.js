@@ -8,10 +8,11 @@ class Posts extends React.Component {
 
 
     render() {
+        const token = window.localStorage.getItem('rr_login')
         return(
             <div className='h1__posts'>
                 <h1>Страница Постов</h1>
-                <ListItems />
+                <ListItems token={token}/>
             </div>
         )
     }

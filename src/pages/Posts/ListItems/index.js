@@ -12,7 +12,8 @@ class ListItems extends React.Component {
         description: '',
         image: '',
         titile: '',
-        created_user: ''
+        created_user: '',
+        stateToogle: false
     }
 
     componentDidMount() {
@@ -27,12 +28,14 @@ class ListItems extends React.Component {
 
     saveClick = () => {
         console.log('SAVE')
+        this.setState({
+            stateToogle: !this.state.stateToogle
+        })
     }
 
     get_allposts = () => {
         axios.get(`/posts`)
         .then((response) => {
-            console.log('AllPosts',response.data)
             this.setState({
                 data: response.data
             })
@@ -52,7 +55,7 @@ class ListItems extends React.Component {
 
     
     render() {
-        console.log('CREATESTATE', this.state)
+        const {token} = this.props
         const {data} = this.state
         const ItemElem = data.map((item) => {
             return (<Link key={item._id} to={`/Posts/${item._id}`}>
@@ -66,7 +69,7 @@ class ListItems extends React.Component {
         return (
             <div className='list__itemsblock'>
                 {ItemElem}
-                <DialogSelect propsHuck={this.propsHuck} notSave={this.notSave} saveClick={this.saveClick}/>
+                <DialogSelect token={token} propsHuck={this.propsHuck} notSave={this.notSave} saveClick={this.saveClick}/>
             </div>
             
         )
