@@ -25,7 +25,7 @@ class PostPage extends React.Component {
     state = {
         stateData: [],
         description: '',
-        titile: '',
+        title: '',
         imageFile: '',
         relogItemCard: false
     }
@@ -37,12 +37,11 @@ class PostPage extends React.Component {
     }
 
     saveEditPost = () => {
-      console.log('STATE', this.state)
       const id = this.state.stateData._id
 
       const fd = new FormData()
       fd.append('imageFile', this.state.imageFile)
-      fd.append('title', this.state.titile)
+      fd.append('title', this.state.title)
       fd.append('description', this.state.description)
 
       axios.put(`/post/${id}`, fd)
@@ -61,13 +60,11 @@ class PostPage extends React.Component {
     }
 
     deletePost = () => {
-      const token = window.localStorage.getItem('rr_login')
       const id = this.state.stateData._id
-      console.log(this.state.stateData.created_user == window.localStorage.getItem('rr_id'))
       axios.delete(`/post/${id}`)
       .then( res => {
         console.log(res)
-        // this.props.goTo('/Posts')
+        this.props.goTo('/Posts')
       })
       .then(err => {
         console.log(err)
@@ -96,7 +93,7 @@ class PostPage extends React.Component {
           alt="Contemplative Reptile"
           className={classes.media}
           height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
+          image={`http://localhost:4000/uploads/${stateData.imageFile}`}
           title='adasdasdas'
         />
         <CardContent>
@@ -111,7 +108,7 @@ class PostPage extends React.Component {
       <CardActions>
 
           <DeletePage deletePost={this.deletePost} />
-          <EditPosts propsHuckEdit={this.propsHuckEdit} saveEditPost={this.saveEditPost} editImage={this.editImage}/>
+          <EditPosts stateData={stateData} propsHuckEdit={this.propsHuckEdit} saveEditPost={this.saveEditPost} editImage={this.editImage}/>
 
 
       </CardActions>

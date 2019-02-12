@@ -3,8 +3,7 @@ import './Obautus.css'
 
 class Obautus extends React.Component {
     render() {
-        const login = window.localStorage.getItem('rr_login')
-        console.log('login', login === 'admin')
+        // const login = window.localStorage.getItem('rr_login')
         return (
             <div className="Pages__center">
                 <h1>О нас</h1>

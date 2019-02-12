@@ -18,7 +18,6 @@ class App extends Component {
   }
 
   relogKey = () => {
-    console.log('RELOG')
     this.setState({
       tokenApp: null
     })

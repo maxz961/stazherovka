@@ -29,12 +29,10 @@ class AdminSelect extends React.Component {
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
     this.props.adminJump(event.target)
-    console.log('CHANGECLICK', event.target.value)
   };
 
   render() {
     const {isAdmin} = this.props
-
     return (
       <div>
         <FormControl  className="admin__select">
@@ -44,8 +42,8 @@ class AdminSelect extends React.Component {
             onChange={this.handleChange('age')}
             input={<Input name="age" id="age-native-helper" />}
           >
-            <option value={isAdmin ? true : false}>{isAdmin ? 'Admin' : 'Users'}</option>
-            <option value={isAdmin ? false : true}>{isAdmin ? 'Users' : 'Admin'}</option>
+            <option value={isAdmin}>{isAdmin === true ? 'Admin' : 'Users'}</option>
+            <option value={isAdmin === true ? false : true}>{isAdmin === true ? 'Users' : 'Admin'}</option>
           </NativeSelect>
         </FormControl>
       </div>

@@ -27,7 +27,6 @@ class ListItems extends React.Component {
     }
 
     saveClick = () => {
-        console.log('SAVE')
         this.setState({
             stateToogle: !this.state.stateToogle
         })
@@ -60,7 +59,7 @@ class ListItems extends React.Component {
         const ItemElem = data.map((item) => {
             return (<Link key={item._id} to={`/Posts/${item._id}`}>
                 <ListItem id={item._id}
-                    title={item.title} image={item.image}
+                    title={item.title} image={item.imageFile}
                     description={item.description}
                     created_user={item.created_user}
                 />
@@ -69,7 +68,8 @@ class ListItems extends React.Component {
         return (
             <div className='list__itemsblock'>
                 {ItemElem}
-                <DialogSelect token={token} propsHuck={this.propsHuck} notSave={this.notSave} saveClick={this.saveClick}/>
+                {/* <DialogSelect token={token} propsHuck={this.propsHuck} notSave={this.notSave} saveClick={this.saveClick}/> */}
+                <DialogSelect token={token} propsHuck={this.propsHuck}/>
             </div>
             
         )

@@ -1,0 +1,9 @@
+
+#list__item {
+    display: block;
+}
+
+.list__text {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

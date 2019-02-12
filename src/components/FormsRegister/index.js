@@ -55,10 +55,9 @@ class TextFields extends React.Component {
             email: this.state.RegisterEmail,
             password: this.state.RegisterPassword,
         }
-        console.log(this.state)
         axios.post('/registration', data)
         .then((response) => {
-            console.log('REG', response)
+            console.log(response)
         })
         .then((error) => {
             console.log(error)

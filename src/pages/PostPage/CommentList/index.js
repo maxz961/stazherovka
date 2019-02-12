@@ -7,6 +7,9 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
+import DeleteComment from '../DeleteComment'
+import EditComment from '../EditComment'
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -17,8 +20,25 @@ const styles = theme => ({
   },
 });
 
-function CommentList(props) {
-  const { classes, item } = props;
+class CommentList extends React.Component {
+
+  deleteComm = () => {
+    const id = this.props.item._id
+    this.props.deleteComm(id)
+  }
+
+
+  openSaveEditComm = () => {
+    const id = this.props.item._id
+    this.props.openSaveEditComm(id)
+  }
+
+  propsHuckEditComm = (target) => {
+    this.props.propsHuckEditComm(target)
+  }
+
+  render() {
+  const { classes, item } = this.props;
   return (
     <List className={classes.root}>
       <ListItem alignItems="flex-start">
@@ -36,9 +56,14 @@ function CommentList(props) {
             </React.Fragment>
           }
         />
+        <EditComment openSaveEditComm={this.openSaveEditComm} propsHuckEditComm={this.propsHuckEditComm}/> 
+        <DeleteComment deleteComm={this.deleteComm}/>
       </ListItem>
+      {/* <DeleteComment deleteComm={this.deleteComm}/> */}
+
     </List>
   );
+}
 }
 
 

@@ -27,7 +27,7 @@ function ListItem(props) {
           alt="Contemplative Reptile"
           className={classes.media}
           height="140"
-          image={image}
+          image={`http://localhost:4000/uploads/${image}`}
           title="Contemplative Reptile"
         />
         <CardContent>

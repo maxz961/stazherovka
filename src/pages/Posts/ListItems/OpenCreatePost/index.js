@@ -27,19 +27,23 @@ class DialogSelect extends React.Component {
   state = {
     open: false,
     age: '',
-    selectedFile: null
+    selectedFile: null,
+    title: '',
+    description: ''
+
   };
 
 
   fileSelectedHandler = e => {
-    console.log('FILe', e.target.files[0])
     this.setState({
       selectedFile: e.target.files[0]
     })
   }
 
 handleChange = (e) => {
-    this.props.propsHuck(e.target)           
+    this.setState({
+      [e.target.id]: e.target.value
+    })          
 }
 
   handleClickOpen = () => {
@@ -54,8 +58,8 @@ handleChange = (e) => {
   openSave = () => { 
     const fd = new FormData()
     fd.append('imageFile', this.state.selectedFile)
-    fd.append('title', 'sssssssss')
-    fd.append('description', 'sssssssss')
+    fd.append('title', this.state.title)
+    fd.append('description', this.state.description)
 
     axios.post('/post', fd)
     .then(res => {
@@ -64,10 +68,7 @@ handleChange = (e) => {
     .then(err => {
       console.log(err)
     })
-
-
     this.setState({ open: false });
-    this.props.saveClick() 
   }
 
   render() {
@@ -92,6 +93,16 @@ handleChange = (e) => {
               <FormControl className={classes.formControl}>
 
               <TextField
+                inputProps={{ maxLength: 30 }}
+                label="title"
+                type="email"
+                className='input__style'
+                margin="dense"
+                id="title"
+                onChange={this.handleChange}
+                />
+
+              <TextField
                 inputProps={{ maxLength: 20 }}
                 label="description"
                 className='input__style'
@@ -99,15 +110,6 @@ handleChange = (e) => {
                 id="description"
                 onChange={this.handleChange}
                 /><br />
-                <TextField
-                inputProps={{ maxLength: 30 }}
-                label="titile"
-                type="email"
-                className='input__style'
-                margin="dense"
-                id="titile"
-                onChange={this.handleChange}
-                />
                 <label htmlFor="outlined-button-file">
                     <Button
                         variant="contained"

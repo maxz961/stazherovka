@@ -24,21 +24,12 @@ const styles = theme => ({
 
 class DialogSelect extends React.Component {
   state = {
-    open: false,
-    title: '',
-    description: ''
+    open: false
   };
 
 
-  fileSelectedHandler = e => {
-    this.props.editImage(e.target.files[0])
-  }
-
-handleChangeEdit = (e) => {
-    this.props.propsHuckEdit(e.target)
-    this.setState({
-      [e.target.id]: e.target.value
-    })           
+handleChangeEditComm = (e) => {
+    this.props.propsHuckEditComm(e.target)           
 }
 
   handleClickOpen = () => {
@@ -49,18 +40,10 @@ handleChangeEdit = (e) => {
     this.setState({ open: false });
   };
 
-  openSaveEdit = () => { 
+  openSaveEditComm = () => { 
     this.setState({ open: false });
-    this.props.saveEditPost()
+    this.props.openSaveEditComm()
   }
-
-  componentDidUpdate(prevProps) {
-    const {stateData} = this.props
-    if(stateData !== prevProps.stateData)
-    this.setState({
-        title: stateData.title, description: stateData.description
-    })
-}
 
   render() {
     const { classes} = this.props;
@@ -75,41 +58,23 @@ handleChangeEdit = (e) => {
           disableEscapeKeyDown
           open={this.state.open}
           onClose={this.handleClose}
+          maxWidth='lg'
         >
-          <DialogTitle className='open__dialogtext'>Редактирование поста</DialogTitle>
+          <DialogTitle className='open__dialogtext'>Редактирование коментария</DialogTitle>
           <DialogContent>
             <form className={classes.container}>
-              <FormControl className={classes.formControl}>
-
-              <TextField
-                inputProps={{ maxLength: 30 }}
-                value={this.state.title}
-                label="title"
-                type="email"
-                className='input__style'
-                margin="dense"
-                id="title"
-                onChange={this.handleChangeEdit}
-                />
-
-              <TextField
-                inputProps={{ maxLength: 20 }}
-                value={this.state.description}
-                label="description"
-                className='input__style'
-                margin="dense"
-                id="description"
-                onChange={this.handleChangeEdit}
-                /><br />
-                <label htmlFor="outlined-button-file">
-                    <Button
-                        variant="contained"
-                        component="label">
-                            Upload File
-                        <input type="file" id='imageFile' style={{ display: "none" }} onChange={this.fileSelectedHandler} />
-                    </Button>
-                 </label>
-
+              <FormControl fullWidth={true} className={classes.formControl}>
+                    <TextField
+                    rows='7'
+                    id="textareaComm"
+                    label="Оставьте комментарий"
+                    placeholder="Placeholder"
+                    multiline
+                    className='div__post__comment'
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleChangeEditComm}
+                    />
               </FormControl>
             </form>
           </DialogContent>
@@ -117,7 +82,7 @@ handleChangeEdit = (e) => {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.openSaveEdit} color="primary">
+            <Button onClick={this.openSaveEditComm} color="primary">
               Ok
             </Button>
           </DialogActions>

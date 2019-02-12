@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import OpenDialog from './OpenDialog'
 import axios from '../../axios.config'
-import AdminProfile from './AdminProfile'
+import Admin from './AdminProfile/Admin'
 import './Profile.css'
 
 const id = window.localStorage.getItem('rr_id')
@@ -23,15 +23,14 @@ class Profile extends React.Component {
         newAdmin: false
     }
 
-    checkUsers = (login) => {
-        console.log('login', login);
+    // checkUsers = (login) => {
+    //     console.log('login', login);
         
-    }
+    // }
 
     handleSubmit = () => {
         window.localStorage.clear()
         this.props.relogKey()
-        // this.props.history.push('/')
     }
 
     handleChange = (target) => {
@@ -41,17 +40,11 @@ class Profile extends React.Component {
 
     saveClick = (target) => {
         const {nameProfile, infoProfile} = this.state
-        
-        axios.post(`/post`, token, )
-        .then((response) => {
-            console.log('CREATEPOST', response)
-        })
-        .then((error) => {
-            console.log('PUTR', error);
-        })
+        const isCheck = target.value === undefined ? this.state.isAdmin : target.value
+        const isAdmin = isCheck === 'true' ? true : false
         
         this.setState({
-            ...this.state, oldName: nameProfile, oldInfo: infoProfile, newAdmin: target.value, isAdmin: target.value
+            ...this.state, oldName: nameProfile, oldInfo: infoProfile, newAdmin: isAdmin, isAdmin: isAdmin
         })
     }
 
@@ -65,7 +58,7 @@ class Profile extends React.Component {
     get_profile = (id, token) => {
         axios.get(`/user/${id}`, token)
         .then((response) => {
-            console.log('RES', response)
+            console.log(response)
             this.setState({
                 oldName: response.data.name,
                 oldInfo: response.data.email,
@@ -76,7 +69,7 @@ class Profile extends React.Component {
             })
         })
         .then((error) => {
-            console.log('#################3',error)
+            console.log(error)
         })
     }
 
@@ -85,16 +78,12 @@ class Profile extends React.Component {
     }
 
 
-    render() {
-        console.log('state', this.state)
-        
+    render() {    
         const {nameProfile, infoProfile, oldName, oldInfo, isAdmin, newAdmin} = this.state
         const token = window.localStorage.getItem('rr_login')
-        const isToogle = isAdmin === 'true' ? true : false
-        const isRedirect = newAdmin === 'true' ? true : false
 
 
-        if(isRedirect === false || newAdmin === false) {
+        if(newAdmin === false) {
    
         return token === null ? ( <Redirect to="/"/>) : (
 
@@ -107,23 +96,24 @@ class Profile extends React.Component {
                 </Grid>
                 <h1>{oldName}</h1>
                 <p>{oldInfo}</p>
-                <p>Статус Пользователя: {newAdmin === 'true' ? ' Админ' : ' Пользователь'}</p>
-                <OpenDialog  isAdmin={isToogle}
+                <p>Статус Пользователя: {newAdmin === true ? ' Админ' : ' Пользователь'}</p>
+                <OpenDialog  isAdmin={isAdmin}
                  propsHuck={this.handleChange} nameProfile={nameProfile}
                   infoProfile={infoProfile} saveClick={this.saveClick} notSave={this.notSave}/>
 
                 <Button type="submit"
                     variant="outlined" 
                     color="primary"
-                    onClick={this.handleSubmit}>
-                Выход
-           </Button>
+                    onClick={this.handleSubmit}
+                    >
+                    Выход
+                </Button>
             </div>
         )
         }
 
-        if(isRedirect === true || newAdmin === true) {
-            return token === null ? ( <Redirect to="/"/>) : ( <AdminProfile />)
+        if(newAdmin === true) {
+            return token === null ? ( <Redirect to="/"/>) : ( <Admin handleSubmit={this.handleSubmit} />)
                    
         }
     }

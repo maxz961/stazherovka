@@ -31,11 +31,12 @@ class DialogSelect extends React.Component {
 
 
   fileSelectedHandler = e => {
-    this.props.editImage(e.target.files[0])
+    const image = this.props.editImage(e.target.files[0])
+    this.props.imageChange(image)
   }
 
-handleChangeEdit = (e) => {
-    this.props.propsHuckEdit(e.target)
+  handleChangeAdmin = (e) => {
+    this.props.propsHuckAdmin(e.target)
     this.setState({
       [e.target.id]: e.target.value
     })           
@@ -51,16 +52,9 @@ handleChangeEdit = (e) => {
 
   openSaveEdit = () => { 
     this.setState({ open: false });
-    this.props.saveEditPost()
+    this.props.saveUsersAdmin()
   }
 
-  componentDidUpdate(prevProps) {
-    const {stateData} = this.props
-    if(stateData !== prevProps.stateData)
-    this.setState({
-        title: stateData.title, description: stateData.description
-    })
-}
 
   render() {
     const { classes} = this.props;
@@ -84,22 +78,33 @@ handleChangeEdit = (e) => {
               <TextField
                 inputProps={{ maxLength: 30 }}
                 value={this.state.title}
-                label="title"
-                type="email"
+                label="name"
+                type="text"
                 className='input__style'
                 margin="dense"
-                id="title"
-                onChange={this.handleChangeEdit}
+                id="name"
+                onChange={this.handleChangeAdmin}
                 />
 
               <TextField
                 inputProps={{ maxLength: 20 }}
                 value={this.state.description}
-                label="description"
+                label="Email"
+                type="email"
                 className='input__style'
                 margin="dense"
-                id="description"
-                onChange={this.handleChangeEdit}
+                id="email"
+                onChange={this.handleChangeAdmin}
+                /><br />
+                <TextField
+                inputProps={{ maxLength: 20 }}
+                value={this.state.description}
+                label="Password"
+                type="password"
+                className='input__style'
+                margin="dense"
+                id="password"
+                onChange={this.handleChangeAdmin}
                 /><br />
                 <label htmlFor="outlined-button-file">
                     <Button
@@ -117,7 +122,7 @@ handleChangeEdit = (e) => {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.openSaveEdit} color="primary">
+            <Button onClick={this.saveUsersAdmin} color="primary">
               Ok
             </Button>
           </DialogActions>

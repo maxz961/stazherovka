@@ -16,34 +16,9 @@ class Login extends Component {
         id: 'id'
       }
     
-    //   get_profile = (id, token) => {
-    //     axios.get(`/user/${id}`, token)
-    //     .then((response) => {
-    //         console.log('RES', response)
-    //         this.setState({
-    //           id: response.data._id
-    //         })
-    
-    //     })
-    //     .then((error) => {
-    //         console.log(error)
-    //     })
-    // }
-    
-    // componentDidMount() {
-    //   console.log('login', token)
-    //   if(token !== null) {
-    //     console.log('loginIf', token)
-    //     this.get_profile(id, token)
-    //   }
-    // }
-    
 
     checkLogin = (login) => {
-        console.log('TOKLOG', login)
         if(login.token !== null) {
-            console.log('Прыгаем')
-            // this.props.history.push('/Profile/:id')
             window.localStorage.setItem('rr_id', login.user._id)
             this.setState({
                 id: login.user._id
