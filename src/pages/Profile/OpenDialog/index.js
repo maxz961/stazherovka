@@ -10,7 +10,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
-import AdminSelect from '../AdminSelect'
 import './OpenDialog.css'
 
 const styles = theme => ({
@@ -27,15 +26,9 @@ const styles = theme => ({
 class DialogSelect extends React.Component {
   state = {
     open: false,
-    age: '',
-    target: this.props.isAdmin
+    age: ''
   };
 
-  adminJump = (target) => {
-    this.setState({
-      target
-    })
-  }
 
 handleChange = (e) => {
     this.props.propsHuck(e.target)           
@@ -58,7 +51,6 @@ handleChange = (e) => {
 
   render() {
     const { classes, nameProfile, infoProfile } = this.props;
-    const {isAdmin} = this.props
 
     return (
       <div>
@@ -97,7 +89,6 @@ handleChange = (e) => {
                 />
 
               </FormControl>
-              <AdminSelect isAdmin={isAdmin} adminJump={this.adminJump}/>
             </form>
           </DialogContent>
           <DialogActions>

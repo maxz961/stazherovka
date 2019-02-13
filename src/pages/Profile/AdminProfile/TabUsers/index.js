@@ -1,25 +1,18 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Avatar from '@material-ui/core/Avatar';
-import MenuIcon from '@material-ui/icons/Menu';
-import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/MoreVert';
 
 import axios from '../../../../axios.config'
 import './TabUsers.css'
+import EditUsers from '../EditUsers';
+import AddUsers from '../AddUsers';
+import DeleteUsers from '../DeleteUsers'
+
 
 const styles = theme => ({
   text: {
@@ -57,7 +50,13 @@ const styles = theme => ({
 class BottomAppBar extends React.Component {
 
     state = {
-        users: []
+        users: [],
+        file: '',
+        name: '',
+        email: '',
+        password: '',
+        isAdmin: false,
+        newAdmin: false
     }
 
     componentDidMount() {
@@ -73,6 +72,75 @@ class BottomAppBar extends React.Component {
             
         })
     }
+
+    saveUsersAdmin = (id, target, name, email, password, imageFile) => {
+      const newAdmin = target === 'true' ? true : false
+      console.log('save', id, newAdmin, name, email, password, imageFile)
+
+
+      const fd = new FormData()
+      
+      fd.append('name', name)
+      fd.append('password', password)
+      fd.append('email', email)
+      fd.append('isAdmin', newAdmin)
+      fd.append('imageFile', imageFile)
+
+
+      axios.put(`user/${id}`, fd)
+      .then(res =>{
+        console.log(res)
+      })
+      .then(err=>{
+        console.log(err)
+      })
+      
+    }
+
+    deleteUsers = (id) => {
+      console.log('удалили')
+      axios.delete(`user/${id}`)
+      .then(res=>{
+        console.log(res);
+      })
+      .then(err=>{
+        console.log(err);
+        
+      })
+
+
+    }
+
+    AddUsersAdmin = (target, name, email, password, imageFile) => {
+      const newAdmin = target === 'true' ? true : false
+
+      console.log('ADD', name,password, email, newAdmin,  imageFile);
+      
+      // const fd = new FormData()
+      
+      // fd.append('name', name)
+      // fd.append('password', password)
+      // fd.append('email', email)
+      // fd.append('isAdmin', newAdmin)
+      // fd.append('imageFile', imageFile)
+
+      const data = {
+        name: name,
+        email: email,
+        password: password
+      }
+
+      axios.post(`/registration`, data)
+      .then(res =>{
+        console.log(res)
+      })
+      .then(err=>{
+        console.log(err)
+      })
+
+    }
+
+
 render() {
   const { classes } = this.props;
   const {users} = this.state
@@ -92,13 +160,19 @@ render() {
                 {/* <ListItemText primary={email} secondary={name}/><br /> */}
                 <h2 className='list__text'>Name: {name}</h2><br />
                 <p className='list__text'>Status: {isAdmin ? 'ADMIN' : 'USERS'}</p><br />
-                <p className='list__text'>Email: {email}</p><br />
+                <p className='list__text'>Email: {email}</p>
+                <EditUsers id={_id} isAdmin={isAdmin} saveUsersAdmin={this.saveUsersAdmin}/>
+                <DeleteUsers id={_id} deleteUsers={this.deleteUsers} />
               </ListItem>
+              
             </Fragment>
+            
           ))}
+          <AddUsers AddUsersAdmin={this.AddUsersAdmin} />
         </List>
-
+        
       </Paper>
+      
     </React.Fragment>
   );
 }

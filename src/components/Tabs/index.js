@@ -50,6 +50,7 @@ componentDidMount() {
             {!tokenApp ? <Link className="Link__not" to="/Login"><Tab label="Логин" /></Link>: null}
             {!tokenApp ? <Link className="Link__not" to="/Registration"><Tab label="Регестрация" /></Link>: null}
             {tokenApp ? <Link className="Link__not" to={`/Profile/${this.state.id}`}><Tab label="Профиль" /></Link> : null}
+            <Link className="Link__not" to="/Chat"><Tab label="Чат" /></Link>
           </div>
         </AppBar>
       </div>

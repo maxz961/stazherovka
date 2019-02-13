@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+
 import './App.css';
 import Login from './pages/Login'
 import Obautus from './pages/Obautus'
@@ -8,6 +10,9 @@ import Registration from './pages/Registration'
 import Tabs from './components/Tabs'
 import Posts from './pages/Posts'
 import PostPage from './pages/PostPage'
+import Chat from './pages/Chat/ChatItem'
+
+
 
 
 
@@ -43,6 +48,7 @@ class App extends Component {
           <Route path="/Profile/:id" render={() => <Profile relogKey={this.relogKey}/>}/>
           <Route path="/Registration" component={Registration} />
           <Route path={`/Posts/:post`} component={PostPage} />
+          <Route path={`/Chat`} component={Chat} />
         </div>
       </Router>
     );

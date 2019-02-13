@@ -4,7 +4,6 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import './AdminSelect.css'
 
 const styles = theme => ({
   root: {
@@ -20,7 +19,7 @@ const styles = theme => ({
   },
 });
 
-class AdminSelect extends React.Component {
+class AddAdminSelect extends React.Component {
   state = {
     age: 'Users',
     labelWidth: 0,
@@ -29,10 +28,10 @@ class AdminSelect extends React.Component {
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
     this.props.adminJump(event.target)
+    console.log('TARGET', event.target.value)
   };
 
   render() {
-    const {isAdmin} = this.props
     return (
       <div>
         <FormControl  className="admin__select">
@@ -42,8 +41,8 @@ class AdminSelect extends React.Component {
             onChange={this.handleChange('age')}
             input={<Input name="age" id="age-native-helper" />}
           >
-            <option value={isAdmin}>{isAdmin === true ? 'Admin' : 'Users'}</option>
-            <option value={isAdmin === true ? false : true}>{isAdmin === true ? 'Users' : 'Admin'}</option>
+            <option value={false}>Users</option>
+            <option value={true}>Admin</option>
           </NativeSelect>
         </FormControl>
       </div>
@@ -52,4 +51,4 @@ class AdminSelect extends React.Component {
 }
 
 
-export default withStyles(styles)(AdminSelect);
+export default withStyles(styles)(AddAdminSelect);

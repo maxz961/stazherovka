@@ -9,8 +9,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
-import Icon from '@material-ui/core/Icon';
-import AdminSelect from '../AdminSelect'
+import AddAdminSelect from '../AddAdminSelect'
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   container: {
@@ -43,7 +43,6 @@ class DialogSelect extends React.Component {
 
 
   fileSelectedHandler = e => {
-    // const image = this.props.editImage(e.target.files[0])
     this.setState({
       imageFile: e.target.files[0]
     })
@@ -67,18 +66,18 @@ class DialogSelect extends React.Component {
     
     this.setState({ open: false });
     const {name, email, password, imageFile, target} = this.state
-    this.props.saveUsersAdmin(this.props.id, target, name, email, password, imageFile)
+    this.props.AddUsersAdmin(this.props.id, target, name, email, password, imageFile)
   }
 
 
   render() {
-    const { classes, isAdmin} = this.props;
+    const { classes} = this.props;
 
     return (
       <div>
-                <Fab size='large' onClick={this.handleClickOpen} color="secondary" aria-label="Edit" className={classes.fab} id='edit__users'>
-                    <Icon fontSize="small">edit_icon</Icon>
-                </Fab>
+                <Fab  onClick={this.handleClickOpen} color="secondary" aria-label="Add" id='add__admin__button'>
+                    <AddIcon />
+                 </Fab>
         <Dialog
           disableBackdropClick
           disableEscapeKeyDown
@@ -121,7 +120,7 @@ class DialogSelect extends React.Component {
                 id="password"
                 onChange={this.handleChangeAdmin}
                 /><br />
-                <AdminSelect isAdmin={isAdmin} adminJump={this.adminJump}/>
+                <AddAdminSelect adminJump={this.adminJump}/>
                 <label htmlFor="outlined-button-file">
                     <Button
                         variant="contained"
