@@ -49,23 +49,32 @@ class TextFields extends React.Component {
         if(LoginPassword.length >= 6) {
             this.setState({ isBlockPasswordLog: false})
         }
+        if(LoginPassword.length >= 6 && LoginName.length >= 4 && validEmail !==null) {
 
         let data = {
             name: this.state.LoginName,
             email: this.state.LoginEmail,
             password: this.state.LoginPassword,
         }
-        axios.post('/login', data)
+    
+        axios.request().post('/login', data)
         .then((response) => {
             console.log('LOG', response)
+            if(response.data) {
             window.localStorage.setItem('rr_login', response.data.token)
             this.props.checkLogin(response.data)
+            }
+            else {
+                this.setState({
+                    isBlockEmailLog: true, isBlockNameLog: true, isBlockPasswordLog: true
+                })
+            }
         })
-        .then((error) => {
-            console.log(error)
+        .then((err) => {
+            console.log(err)
         })
     }
-
+    }
   render() {
     const { classes } = this.props;
     const {LoginName, LoginEmail, LoginPassword, isBlockNameLog, isBlockEmailLog, isBlockPasswordLog} = this.state

@@ -2,17 +2,50 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import openSocket from "socket.io-client";
+import { withStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Paper from '@material-ui/core/Paper';
+import List from '@material-ui/core/List';
 
 import axios from '../../../axios.config'
 import './ChatItem.css'
 import ChatList from '../ChatList';
-
-
-
+import ChatConnectUsers from '../ChatConnectUsers'
 
 const styles = theme => ({
-
+  text: {
+    paddingTop: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+  },
+  paper: {
+    paddingBottom: 50,
+  },
+  list: {
+    marginBottom: theme.spacing.unit * 2,
+  },
+  subHeader: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+  },
+  toolbar: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  fabButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  },
 });
+
+
 
 
 class Chat extends React.Component {
@@ -24,7 +57,8 @@ class Chat extends React.Component {
             arguments: '',
            data: {
             name: 'User',
-            message: ''
+            message: '',
+            avatar: ''
            }
         }
       }
@@ -44,13 +78,16 @@ class Chat extends React.Component {
         const message = this.state.arguments
         const data = {userId, message}
         this.socket.emit('send-from-user', data, () => {})
+        this.setState({
+          arguments: ''
+        })
         
     }
 
 
     componentDidMount() {
         const id = window.localStorage.getItem('rr_id')
-        axios.get(`user/${id}`)
+        axios.request().get(`user/${id}`)
         .then(res=>{
             console.log(res)
             this.setState({
@@ -66,33 +103,58 @@ class Chat extends React.Component {
         
 
         this.socket = openSocket('http://192.168.88.189:4000')
-        console.log('SOKET', this.socket);
-        console.log('KKY');
-        axios.get('/chat').then(res=>{
-            console.log('ITEM', res);   
+        axios.request().get('/chat').then(res=>{
+            res.data.map(item =>{
+              const updatedName = {
+                ...this.state.data, 
+                name: item.name,
+                message: item.message,
+                avatar: item.avatar
+            }
+              return this.setState({
+                data: updatedName 
+              })
+            })   
         })
         .catch(err=>{
             console.log(err);        
         })
         
         this.socket.on('new message', data => {
-            console.log('DATA', data)
+          console.log('data', data)
             const updatedName = {
                 ...this.state.data, 
                 name: data.name,
-                message: data.message
+                message: data.message,
+                avatar: data.avatar
             }
             this.setState({ data: updatedName })
             
         })
+
+        this.socket.on('username-result', res => {
+            console.log('RES', res)
+        })
     }
     render() {
-        console.log('soket',this.data)
+        const {classes} = this.props
+        console.log('soket',this.state)
         return (
             <div>
                 <h1 className='h1__chat'>Страница чата</h1>
-                {/* <ChatList data={this.state.data}/> */}
-                <form className='form__chat' noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
+                <React.Fragment>
+      <CssBaseline /> 
+      <div className='row'> 
+      <Paper square className={classes.paper}  id='chat__list'>
+        <List className={classes.list}>
+
+            <ChatList data={this.state.data}/>
+
+        </List>
+      </Paper> 
+      <ChatConnectUsers/>
+      </div> 
+      <form className='form__chat' noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
                 <div className='input__chat__div'>
                 <TextField
                 inputProps={{ maxLength: 20 }}
@@ -111,10 +173,11 @@ class Chat extends React.Component {
                     Отправить
                 </Button>
                 </div>
-                </form>  
+                </form> 
+    </React.Fragment>
             </div>
         )
     }
 }
 
-export default Chat
+export default withStyles(styles)(Chat)

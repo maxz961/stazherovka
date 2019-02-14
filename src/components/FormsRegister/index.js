@@ -49,20 +49,23 @@ class TextFields extends React.Component {
         }
 
 
-
+if(validEmail !== null && RegisterName.length >= 4 && RegisterPassword.length >= 6) {
         let data = {
             name: this.state.RegisterName,
             email: this.state.RegisterEmail,
             password: this.state.RegisterPassword,
         }
-        axios.post('/registration', data)
+        this.props.goTo('/Login')
+        axios.request().post('/registration', data)
         .then((response) => {
             console.log(response)
+            this.props.history.push('/Login')
         })
         .then((error) => {
             console.log(error)
         })
     }
+}
 
   render() {
     const {isBlockEmail, isBlockName, isBlockPassword} = this.state

@@ -9,8 +9,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
-import AddAdminSelect from '../AddAdminSelect'
 import AddIcon from '@material-ui/icons/Add';
+
+import './AddUsers.css'
 
 const styles = theme => ({
   container: {
@@ -29,8 +30,10 @@ class DialogSelect extends React.Component {
     name: '',
     email: '',
     password: '',
-    imageFile: '',
-    target: this.props.isAdmin
+    isBlockEmail: false,
+    isBlockName: false,
+    isBlockPassword: false
+
   };
 
   adminJump = (target) => {
@@ -63,20 +66,44 @@ class DialogSelect extends React.Component {
   };
 
   openSaveEdit = () => { 
-    
+    const {name, email, password} = this.state
+
+        const validEmail = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        
+        if(email.length === 0 || validEmail === null) {
+            this.setState({ isBlockEmail: true})
+        } 
+        if(email.length > 0 && validEmail !== null) {
+            this.setState({ isBlockEmail: false})
+        } 
+        if(name.length < 4) {
+            this.setState({ isBlockName: true})
+        }
+        if(name.length >= 4) {
+            this.setState({ isBlockName: false})
+        }
+        if(password.length < 6) {
+            this.setState({ isBlockPassword: true})
+        }
+        if(password.length >= 6) {
+            this.setState({ isBlockPassword: false})
+        }
+    if(validEmail !== null && name.length >= 4 && password.length >= 6) {
     this.setState({ open: false });
-    const {name, email, password, imageFile, target} = this.state
-    this.props.AddUsersAdmin(this.props.id, target, name, email, password, imageFile)
+    this.props.AddUsersAdmin(name, email, password)
+    }
   }
+
 
 
   render() {
     const { classes} = this.props;
+    const {isBlockName, isBlockEmail, isBlockPassword } = this.state
 
     return (
       <div>
                 <Fab  onClick={this.handleClickOpen} color="secondary" aria-label="Add" id='add__admin__button'>
-                    <AddIcon />
+                    <AddIcon id='icon__span'/>
                  </Fab>
         <Dialog
           disableBackdropClick
@@ -84,15 +111,15 @@ class DialogSelect extends React.Component {
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <DialogTitle className='open__dialogtext'>Редактирование поста</DialogTitle>
+          <DialogTitle className='open__dialogtext'>Добавление Юзера</DialogTitle>
           <DialogContent>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
 
               <TextField
+                error={isBlockName ? true : false}
                 inputProps={{ maxLength: 30 }}
-                value={this.state.title}
-                label="name"
+                label="Name"
                 type="text"
                 className='input__style'
                 margin="dense"
@@ -101,8 +128,8 @@ class DialogSelect extends React.Component {
                 />
 
               <TextField
+                error={isBlockEmail ? true : false}
                 inputProps={{ maxLength: 20 }}
-                value={this.state.description}
                 label="Email"
                 type="email"
                 className='input__style'
@@ -111,6 +138,7 @@ class DialogSelect extends React.Component {
                 onChange={this.handleChangeAdmin}
                 /><br />
                 <TextField
+                error={isBlockPassword ? true : false}
                 inputProps={{ maxLength: 20 }}
                 value={this.state.description}
                 label="Password"
@@ -120,15 +148,6 @@ class DialogSelect extends React.Component {
                 id="password"
                 onChange={this.handleChangeAdmin}
                 /><br />
-                <AddAdminSelect adminJump={this.adminJump}/>
-                <label htmlFor="outlined-button-file">
-                    <Button
-                        variant="contained"
-                        component="label">
-                            Upload File
-                        <input type="file" id='imageFile' style={{ display: "none" }} onChange={this.fileSelectedHandler} />
-                    </Button>
-                 </label>
 
               </FormControl>
             </form>

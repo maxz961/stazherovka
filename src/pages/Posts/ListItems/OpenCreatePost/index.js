@@ -10,7 +10,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
+
 import axios from '../../../../axios.config'
+import './OpenCreatePost.css'
 
 const styles = theme => ({
   container: {
@@ -29,7 +31,9 @@ class DialogSelect extends React.Component {
     age: '',
     selectedFile: null,
     title: '',
-    description: ''
+    description: '',
+    isTitleErr: false,
+    isDescriptionErr: false
 
   };
 
@@ -56,32 +60,58 @@ handleChange = (e) => {
   };
 
   openSave = () => { 
-    const fd = new FormData()
-    fd.append('imageFile', this.state.selectedFile)
-    fd.append('title', this.state.title)
-    fd.append('description', this.state.description)
 
-    axios.post('/post', fd)
-    .then(res => {
-      console.log(res)
-    })
-    .then(err => {
-      console.log(err)
-    })
-    this.setState({ open: false });
-  }
+
+    const {title, description} = this.state
+
+
+        if(title.length < 4) {
+            this.setState({ isTitleErr: true})
+        }
+        if(title.length >= 4) {
+            this.setState({ isTitleErr: false})
+        }
+        if(description.length < 6) {
+            this.setState({ isDescriptionErr: true})
+        }
+        if(description.length >= 6) {
+            this.setState({ isDescriptionErr: false})
+        }
+
+        if(description.length >= 6 && title.length >= 4) {
+        const fd = new FormData()
+        fd.append('imageFile', this.state.selectedFile)
+        fd.append('title', this.state.title)
+        fd.append('description', this.state.description)
+
+        axios.request().post('/post', fd)
+        .then(res => {
+          console.log(res)
+          this.props.saveClick()
+        })
+        .then(err => {
+          console.log(err)
+        })
+        this.setState({ open: false });
+      }
+    }
+
+  
 
   render() {
+    const {isTitleErr, isDescriptionErr} = this.state
     const { classes} = this.props;
+    const token = window.localStorage.getItem('rr_login')
 
     return (
       <div>
-                <div  id='add__icon' onClick={this.handleClickOpen}>
+                <div className={token === null ? 'block__none' : ''} id='add__icon' onClick={this.handleClickOpen}>
                     <Fab color="primary" aria-label="Add">
                         <AddIcon />
                     </Fab>
                 </div>
         <Dialog
+          maxWidth='lg'
           disableBackdropClick
           disableEscapeKeyDown
           open={this.state.open}
@@ -90,9 +120,11 @@ handleChange = (e) => {
           <DialogTitle className='open__dialogtext'>Добавление поста</DialogTitle>
           <DialogContent>
             <form className={classes.container}>
-              <FormControl className={classes.formControl}>
+            <div id='form__margin__center'>
+              <FormControl className={classes.formControl} >
 
               <TextField
+                error = {isTitleErr ? true : false}
                 inputProps={{ maxLength: 30 }}
                 label="title"
                 type="email"
@@ -103,7 +135,8 @@ handleChange = (e) => {
                 />
 
               <TextField
-                inputProps={{ maxLength: 20 }}
+                error = {isDescriptionErr ? true : false}
+                inputProps={{ maxLength: 100 }}
                 label="description"
                 className='input__style'
                 margin="dense"
@@ -120,15 +153,18 @@ handleChange = (e) => {
                  </label>
 
               </FormControl>
+              </div>
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose} color="primary" id='Button__add__width'>
               Cancel
             </Button>
-            <Button onClick={this.openSave} color="primary">
+            <Button onClick={this.openSave} color="primary" id='Button__add__width'>
               Ok
             </Button>
+            </div>
           </DialogActions>
         </Dialog>
       </div>

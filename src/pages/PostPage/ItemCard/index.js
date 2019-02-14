@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import axios from '../../../axios.config'
 
+import baseApiUrl from '../../../baseaApiUrl'
 import DeletePage from '../DeletePage'
 import EditPosts from '../EditPosts'
 
@@ -44,7 +45,7 @@ class PostPage extends React.Component {
       fd.append('title', this.state.title)
       fd.append('description', this.state.description)
 
-      axios.put(`/post/${id}`, fd)
+      axios.request().put(`/post/${id}`, fd)
       .then(res => {
         console.log(res)
       })
@@ -61,7 +62,7 @@ class PostPage extends React.Component {
 
     deletePost = () => {
       const id = this.state.stateData._id
-      axios.delete(`/post/${id}`)
+      axios.request().delete(`/post/${id}`)
       .then( res => {
         console.log(res)
         this.props.goTo('/Posts')
@@ -93,7 +94,7 @@ class PostPage extends React.Component {
           alt="Contemplative Reptile"
           className={classes.media}
           height="140"
-          image={`http://localhost:4000/uploads/${stateData.imageFile}`}
+          image={stateData.imageFile ? `${baseApiUrl}/uploads/${stateData.imageFile}` : 'http://levogrin.com/wp-content/themes/levon/img/template/default/default-image.png'}
           title='adasdasdas'
         />
         <CardContent>
@@ -107,7 +108,7 @@ class PostPage extends React.Component {
       </CardActionArea>
       <CardActions>
 
-          <DeletePage deletePost={this.deletePost} />
+          <DeletePage deletePost={this.deletePost} stateData={stateData}/>
           <EditPosts stateData={stateData} propsHuckEdit={this.propsHuckEdit} saveEditPost={this.saveEditPost} editImage={this.editImage}/>
 
 

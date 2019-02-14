@@ -6,6 +6,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 
+import './DeletePage.css'
+
 
 class DeletePage extends React.Component {
 
@@ -29,9 +31,12 @@ class DeletePage extends React.Component {
   }
 
   render() {
+    const {stateData} = this.props
+    const idUsers = stateData.created_user === undefined ? null : stateData.created_user._id   
+    const id = window.localStorage.getItem('rr_id')
     return (
       <div>
-            <IconButton aria-label="Delete" onClick={this.handleClickOpen} className='delete__butoon'>
+            <IconButton aria-label="Delete" onClick={this.handleClickOpen} className='delete__butoon' id={idUsers === id ? '' : 'delete__butoon__block'}>
                 <DeleteIcon fontSize="large" />
             </IconButton>
 

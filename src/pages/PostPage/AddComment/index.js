@@ -1,6 +1,7 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import axios from '../../../axios.config'
 
 
 import './AddComment.css'
@@ -21,8 +22,15 @@ class AddComment extends React.Component {
             this.props.saveCommentPost(e.target)
       }
 
+      toGo = () => {
+          this.props.toGoLogin('/Login')
+      }
+
 
     render() {
+        const token = window.localStorage.getItem('rr_login')
+        const {textareaComm} = this.props
+        if(token) {
         return(
             <div className="div__post__comment">
                 <form className='' noValidate autoComplete="off">
@@ -36,6 +44,7 @@ class AddComment extends React.Component {
                     margin="normal"
                     variant="outlined"
                     onChange={this.handleChangeComment}
+                    value={textareaComm}
                     />
                 </form>
                 <div className='btn__comment__post'>
@@ -46,6 +55,17 @@ class AddComment extends React.Component {
             </div>
  
         )
+    }
+    else {
+      return (
+           <div>
+               <h1 className='add__centertext__log'>Войдите что бы написать комментарий</h1>
+                    <Button onClick={() => this.toGo()} variant="contained" color="primary" fullWidth={true}>
+                        Войти
+                    </Button>
+        </div>
+      )
+    }
     }
 }
 

@@ -46,11 +46,16 @@ handleChangeEditComm = (e) => {
   }
 
   render() {
-    const { classes} = this.props;
+    const { classes, author} = this.props;
+    const id = window.localStorage.getItem('rr_id')
 
     return (
       <div>
-                <Fab size='large' onClick={this.handleClickOpen} color="secondary" aria-label="Edit" className={classes.fab}>
+                <Fab 
+                size='large' onClick={this.handleClickOpen}
+                 color="secondary" aria-label="Edit" className={classes.fab}
+                  id={author === id ? '' : 'delete__butoon__block'}
+                  >
                     <Icon fontSize="small">edit_icon</Icon>
                 </Fab>
         <Dialog
@@ -79,12 +84,14 @@ handleChangeEditComm = (e) => {
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose} color="primary" id='Button__add__width'>
               Cancel
             </Button>
-            <Button onClick={this.openSaveEditComm} color="primary">
+            <Button onClick={this.openSaveEditComm} color="primary" id='Button__add__width'>
               Ok
             </Button>
+            </div>
           </DialogActions>
         </Dialog>
       </div>

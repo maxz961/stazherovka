@@ -1,6 +1,7 @@
 import React from 'react'
 import ItemCard from './ItemCard';
 import axios from '../../axios.config'
+import {Redirect } from 'react-router'
 
 
 import CommentList from './CommentList'
@@ -26,7 +27,7 @@ class PostPage extends React.Component {
     console.log('Редактирование комментария', this.state.textareaComm)
     const content = this.state.textareaComm
     const idPost = this.props.match.params.post
-    axios.put(`/post/${idPost}/comment/${id}`, {content})
+    axios.request().request().put(`/post/${idPost}/comment/${id}`, {content})
     .then((response) => {
       console.log(response)
     })
@@ -38,17 +39,18 @@ class PostPage extends React.Component {
   deleteComm = (id) => {
     console.log('Удаление коментария', id)
     const idPost = this.props.match.params.post
-    axios.delete(`/post/${idPost}/comment/${id}`)
+    axios.request().delete(`/post/${idPost}/comment/${id}`)
     .then((response) => {
       console.log(response)
+      this.componentDidMount()
     })
     .then((error) => {
         console.log(error)
     })
   }
 
-  get_post = (id, token) => {
-    axios.get(`/posts/${id}`, token)
+  get_post = (id) => {
+    axios.request().get(`/posts/${id}`)
     .then((response) => {
       console.log(response)
       console.log('GET_ITEM', response.data.comments)
@@ -69,14 +71,14 @@ saveCommentPost = (target) => {
 
 clickSaveCommPost = () => {
   const id = this.props.match.params.post
-  console.log('STATECOMM', this.state)
-  // const fd = new FormData()
-  // fd.append('content', this.state.textareaComm)
-
   const content = this.state.textareaComm
-  axios.post(`/post/${id}/comment`, {content})
+  axios.request().post(`/post/${id}/comment`, {content})
     .then((response) => {
         console.log(response)
+        this.componentDidMount()
+        this.setState({
+          textareaComm: ''
+        })
     })
     .then((error) => {
         console.log(error)
@@ -88,16 +90,19 @@ goTo = (page) => {
   this.props.history.push(page)
 }
 
+toGoLogin = (loginpage) => {
+  this.props.history.push(loginpage)
+}
+
   componentDidMount() {
-    const id = this.props.match.params.post
-    console.log('IDCOM', id)
-    const token = window.localStorage.getItem('rr_login');
-    this.get_post(id, token)
+    console.log('ZAPUSK');
     
+    const id = this.props.match.params.post
+    this.get_post(id)
   }
 
   render() {
-    const {data, comments} = this.state
+    const {data, comments, textareaComm} = this.state
     const itemComment = comments.map((item) => {
       return <CommentList 
               key={item._id} item={item} deleteComm={this.deleteComm}
@@ -110,7 +115,7 @@ goTo = (page) => {
         <div className='comment__list'>
         {comments.length > 0 ? itemComment : <h1>Нет комментариев</h1>}
         </div>
-        <AddComment saveCommentPost={this.saveCommentPost} clickSaveCommPost={this.clickSaveCommPost}/>
+        <AddComment toGoLogin={this.toGoLogin} textareaComm={textareaComm} saveCommentPost={this.saveCommentPost} clickSaveCommPost={this.clickSaveCommPost}/>
       </div>
     )
   }

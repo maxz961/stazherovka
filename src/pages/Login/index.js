@@ -13,7 +13,7 @@ class Login extends Component {
 
 
     state = {
-        id: 'id'
+        id: null
       }
     
 
@@ -30,7 +30,7 @@ class Login extends Component {
     render() {
         const {tokenApp} = this.props
         const {id} = this.state
-        return tokenApp !== null ? ( <Redirect to={`/Profile/${id}`}/>) :
+        return tokenApp !== null && id !== null ? ( <Redirect to={`/Profile/${id}`}/>) :
              (
             <div className="Pages__center">
                 <h1>Логин страница</h1>

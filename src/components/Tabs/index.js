@@ -17,7 +17,7 @@ class Tabs extends React.Component {
   }
 
   get_profile = (id, login) => {
-    axios.get(`/user/${id}`, login)
+    axios.request().get(`/user/${id}`, login)
     .then((response) => {
         this.setState({
           id: response.data._id

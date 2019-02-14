@@ -6,5 +6,9 @@
 .div__post__comment {
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 80px;
+}
 
+.add__centertext__log {
+    text-align: center;
 }

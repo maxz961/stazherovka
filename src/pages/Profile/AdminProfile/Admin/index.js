@@ -20,7 +20,7 @@ class AdminProfile extends React.Component {
     }
 
     get_profile = (id, token) => {
-        axios.get(`/user/${id}`, token)
+        axios.request().get(`/user/${id}`, token)
         .then((response) => {
             console.log(response)
             this.setState({
@@ -38,7 +38,7 @@ class AdminProfile extends React.Component {
     }
 
     get_allposts = () => {
-        axios.get(`/posts`)
+        axios.request().get(`/posts`)
         .then((response) => {
             console.log(response)
         })

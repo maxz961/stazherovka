@@ -63,14 +63,19 @@ handleChangeEdit = (e) => {
 }
 
   render() {
-    const { classes} = this.props;
+    const { classes, stateData} = this.props;
+    const idUsers = stateData.created_user === undefined ? null : stateData.created_user._id   
+    const id = window.localStorage.getItem('rr_id')
 
     return (
       <div>
-                <Fab size='large' onClick={this.handleClickOpen} color="secondary" aria-label="Edit" className={classes.fab}>
+                <Fab size='large' onClick={this.handleClickOpen} color="secondary" aria-label="Edit" className={classes.fab}
+                 id={idUsers === id ? '' : 'delete__butoon__block'}
+                 >
                     <Icon fontSize="small">edit_icon</Icon>
                 </Fab>
         <Dialog
+          maxWidth='lg'
           disableBackdropClick
           disableEscapeKeyDown
           open={this.state.open}
@@ -79,6 +84,7 @@ handleChangeEdit = (e) => {
           <DialogTitle className='open__dialogtext'>Редактирование поста</DialogTitle>
           <DialogContent>
             <form className={classes.container}>
+            <div id='form__margin__center'>
               <FormControl className={classes.formControl}>
 
               <TextField
@@ -111,15 +117,18 @@ handleChangeEdit = (e) => {
                  </label>
 
               </FormControl>
+              </div>
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose}  id='Button__add__width' color="primary">
               Cancel
             </Button>
-            <Button onClick={this.openSaveEdit} color="primary">
+            <Button onClick={this.openSaveEdit}  id='Button__add__width' color="primary">
               Ok
             </Button>
+          </div>
           </DialogActions>
         </Dialog>
       </div>

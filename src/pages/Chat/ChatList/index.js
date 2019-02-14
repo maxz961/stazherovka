@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+
 
 class ChatList extends React.Component {
 
@@ -21,7 +25,14 @@ class ChatList extends React.Component {
 
     render() {
         const data = this.state.message.map(item => {if(item.message.length > 0)
-            return <li>{item.name} <br />{item.message}</li>
+            return (
+            <Fragment>
+              <ListItem button src={item.avatar}>
+                <Avatar alt="Profile Picture"/>
+                <ListItemText primary={item.name} secondary={item.message} />
+              </ListItem>
+            </Fragment>
+            )
         })
         return (
             <ul>

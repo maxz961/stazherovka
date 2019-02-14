@@ -27,9 +27,11 @@ class DeletePage extends React.Component {
   }
 
   render() {
+    const {author} = this.props
+    const id = window.localStorage.getItem('rr_id')
     return (
       <div>
-            <IconButton aria-label="Delete" onClick={this.handleClickOpen} className='delete__butoon'>
+            <IconButton aria-label="Delete" onClick={this.handleClickOpen} className='delete__butoon' id={author === id ? '' : 'delete__butoon__block'}>
                 <DeleteIcon fontSize="large" />
             </IconButton>
 

@@ -38,6 +38,8 @@ class CommentList extends React.Component {
   }
 
   render() {
+    const author = this.props.item.author
+    console.log('author', author)
   const { classes, item } = this.props;
   return (
     <List className={classes.root}>
@@ -56,10 +58,9 @@ class CommentList extends React.Component {
             </React.Fragment>
           }
         />
-        <EditComment openSaveEditComm={this.openSaveEditComm} propsHuckEditComm={this.propsHuckEditComm}/> 
-        <DeleteComment deleteComm={this.deleteComm}/>
+        <EditComment author={author} openSaveEditComm={this.openSaveEditComm} propsHuckEditComm={this.propsHuckEditComm}/> 
+        <DeleteComment author={author} deleteComm={this.deleteComm}/>
       </ListItem>
-      {/* <DeleteComment deleteComm={this.deleteComm}/> */}
 
     </List>
   );

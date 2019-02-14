@@ -3,14 +3,14 @@ import FormsRegister from '../../components/FormsRegister'
 
 class Registration extends React.Component {
 
-    clickHistory = () => {
-        this.props.history.push('/Login')
+    goTo = (page) => {
+        this.props.history.push(page)
     }
     render() {
         return (
             <div className="Pages__center">
                 <h1>Страница регестрации</h1>
-                <FormsRegister clickHistory={this.clickHistory} />
+                <FormsRegister goTo={this.goTo} />
 
             </div>
         )

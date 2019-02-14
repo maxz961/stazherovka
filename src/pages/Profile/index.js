@@ -8,10 +8,6 @@ import axios from '../../axios.config'
 import Admin from './AdminProfile/Admin'
 import './Profile.css'
 
-const id = window.localStorage.getItem('rr_id')
-const token = window.localStorage.getItem('rr_login')
-
-
 class Profile extends React.Component {
 
     state = {
@@ -20,7 +16,9 @@ class Profile extends React.Component {
         nameProfile: 'Имя пользователя',
         infoProfile: 'Информация пользователя',
         isAdmin: false,
-        newAdmin: false
+        newAdmin: false,
+        imageFile: '',
+        password: ''
     }
 
     // checkUsers = (login) => {
@@ -38,13 +36,22 @@ class Profile extends React.Component {
 
     }
 
-    saveClick = (target) => {
-        const {nameProfile, infoProfile} = this.state
-        const isCheck = target.value === undefined ? this.state.isAdmin : target.value
-        const isAdmin = isCheck === 'true' ? true : false
-        
-        this.setState({
-            ...this.state, oldName: nameProfile, oldInfo: infoProfile, newAdmin: isAdmin, isAdmin: isAdmin
+    saveClick = () => {
+        const {nameProfile, infoProfile, imageFile} = this.state
+        const id = window.localStorage.getItem('rr_login')
+        const fd = new FormData()
+      
+        fd.append('name', nameProfile)
+        fd.append('email', infoProfile)
+        fd.append('imageFile', imageFile)
+
+        axios.request().put(`user/${id}`)
+        .then(res=>{
+            console.log(res)
+            this.componentDidMount()
+        })
+        .then(err=>{
+            console.log(err)
         })
     }
 
@@ -55,10 +62,17 @@ class Profile extends React.Component {
         })
     }
 
-    get_profile = (id, token) => {
-        axios.get(`/user/${id}`, token)
+    saveImgState = (img) => {
+        this.setState({
+            imageFile: img
+        })
+    }
+
+    get_profile = (id) => {
+        console.log('IDGET', id);
+        axios.request().get(`/user/${id}`)
         .then((response) => {
-            console.log(response)
+            console.log('RABOTAET',response)
             this.setState({
                 oldName: response.data.name,
                 oldInfo: response.data.email,
@@ -74,7 +88,15 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
-        this.get_profile(id, token)
+        const id = window.localStorage.getItem('rr_id')
+        const token = window.localStorage.getItem('rr_login')
+        console.log('ID', id)
+        console.log('TOKEN', token);
+        
+        // this.get_profile(id, token)
+        if(id ) {
+            this.get_profile(id)
+        }
     }
 
 
@@ -99,7 +121,10 @@ class Profile extends React.Component {
                 <p>Статус Пользователя: {newAdmin === true ? ' Админ' : ' Пользователь'}</p>
                 <OpenDialog  isAdmin={isAdmin}
                  propsHuck={this.handleChange} nameProfile={nameProfile}
-                  infoProfile={infoProfile} saveClick={this.saveClick} notSave={this.notSave}/>
+                  infoProfile={infoProfile} saveClick={this.saveClick} notSave={this.notSave}
+                  saveImgState={this.saveImgState}
+                  />
+                  
 
                 <Button type="submit"
                     variant="outlined" 

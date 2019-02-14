@@ -60,7 +60,7 @@ class BottomAppBar extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('/admin/users')
+        axios.request().get('/admin/users')
         .then(res=>{
             console.log('users',res);
             this.setState({
@@ -87,9 +87,10 @@ class BottomAppBar extends React.Component {
       fd.append('imageFile', imageFile)
 
 
-      axios.put(`user/${id}`, fd)
+      axios.request().put(`user/${id}`, fd)
       .then(res =>{
         console.log(res)
+        this.componentDidMount()
       })
       .then(err=>{
         console.log(err)
@@ -99,9 +100,10 @@ class BottomAppBar extends React.Component {
 
     deleteUsers = (id) => {
       console.log('удалили')
-      axios.delete(`user/${id}`)
+      axios.request().delete(`user/${id}`)
       .then(res=>{
         console.log(res);
+        this.componentDidMount()
       })
       .then(err=>{
         console.log(err);
@@ -111,28 +113,16 @@ class BottomAppBar extends React.Component {
 
     }
 
-    AddUsersAdmin = (target, name, email, password, imageFile) => {
-      const newAdmin = target === 'true' ? true : false
-
-      console.log('ADD', name,password, email, newAdmin,  imageFile);
-      
-      // const fd = new FormData()
-      
-      // fd.append('name', name)
-      // fd.append('password', password)
-      // fd.append('email', email)
-      // fd.append('isAdmin', newAdmin)
-      // fd.append('imageFile', imageFile)
-
+    AddUsersAdmin = ( name, email, password) => {  
       const data = {
         name: name,
         email: email,
         password: password
       }
-
-      axios.post(`/registration`, data)
+      axios.request().post(`/registration`, data)
       .then(res =>{
         console.log(res)
+        this.componentDidMount()
       })
       .then(err=>{
         console.log(err)
@@ -149,7 +139,7 @@ render() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Paper square className={classes.paper}>
+      <Paper square className={classes.paper} id='chat__list'>
         <Typography className={classes.text} variant="h5" gutterBottom>
           Таблица Юзеров
         </Typography>
@@ -168,10 +158,10 @@ render() {
             </Fragment>
             
           ))}
-          <AddUsers AddUsersAdmin={this.AddUsersAdmin} />
         </List>
         
       </Paper>
+      <AddUsers AddUsersAdmin={this.AddUsersAdmin} />
       
     </React.Fragment>
   );

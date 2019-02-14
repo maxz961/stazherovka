@@ -5,6 +5,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+
+import baseApiUrl from '../../../../baseaApiUrl'
 import './ListItem.css'
 
 const styles = {
@@ -18,6 +20,7 @@ const styles = {
 
 function ListItem(props) {
   const { classes, title, image, description, created_user} = props;
+  console.log('img', image)
   
   return (
     <Card className='list__item'>
@@ -27,7 +30,7 @@ function ListItem(props) {
           alt="Contemplative Reptile"
           className={classes.media}
           height="140"
-          image={`http://localhost:4000/uploads/${image}`}
+          image={ image ? `${baseApiUrl}/uploads/${image}` : 'http://levogrin.com/wp-content/themes/levon/img/template/default/default-image.png'}
           title="Contemplative Reptile"
         />
         <CardContent>

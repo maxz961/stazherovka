@@ -2,6 +2,7 @@ import React from 'react'
 import axios from '../../../axios.config'
 import ListItem from './ListItem'
 import {Link} from 'react-router-dom'
+
 import DialogSelect from './OpenCreatePost'
 import './ListItems.css'
 
@@ -27,14 +28,13 @@ class ListItems extends React.Component {
     }
 
     saveClick = () => {
-        this.setState({
-            stateToogle: !this.state.stateToogle
-        })
+        this.componentDidMount()
     }
 
     get_allposts = () => {
-        axios.get(`/posts`)
+        axios.request().get(`/posts`)
         .then((response) => {
+            console.log('DATA', response)
             this.setState({
                 data: response.data
             })
@@ -68,8 +68,7 @@ class ListItems extends React.Component {
         return (
             <div className='list__itemsblock'>
                 {ItemElem}
-                {/* <DialogSelect token={token} propsHuck={this.propsHuck} notSave={this.notSave} saveClick={this.saveClick}/> */}
-                <DialogSelect token={token} propsHuck={this.propsHuck}/>
+                <DialogSelect notSave={this.notSave} saveClick={this.saveClick} token={token} propsHuck={this.propsHuck}/>
             </div>
             
         )

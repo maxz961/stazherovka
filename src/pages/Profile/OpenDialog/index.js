@@ -28,7 +28,13 @@ class DialogSelect extends React.Component {
     open: false,
     age: ''
   };
-
+  fileSelectedHandler = e => {
+    // const image = this.props.editImage(e.target.files[0])
+    // this.setState({
+    //   imageFile: e.target.files[0]
+    // })
+    this.props.saveImgState(e.target.files[0])
+  }
 
 handleChange = (e) => {
     this.props.propsHuck(e.target)           
@@ -58,6 +64,7 @@ handleChange = (e) => {
                 <Icon>edit_icon</Icon>
             </Fab><br />
         <Dialog
+          maxWidth='lg'
           disableBackdropClick
           disableEscapeKeyDown
           open={this.state.open}
@@ -66,6 +73,7 @@ handleChange = (e) => {
           <DialogTitle className='open__dialogtext'>Редактирование пользователя</DialogTitle>
           <DialogContent>
             <form className={classes.container}>
+            <div id='form__margin__center'>
               <FormControl className={classes.formControl}>
 
               <TextField
@@ -78,6 +86,16 @@ handleChange = (e) => {
                 onChange={this.handleChange}
                 /><br />
                 <TextField
+                inputProps={{ maxLength: 20 }}
+                value={this.state.description}
+                label="Password"
+                type="password"
+                className='input__style'
+                margin="dense"
+                id="password"
+                onChange={this.handleChange}
+                /><br />
+                <TextField
                 inputProps={{ maxLength: 30 }}
                 label="Информация пользователя"
                 type="email"
@@ -87,17 +105,28 @@ handleChange = (e) => {
                 id="infoProfile"
                 onChange={this.handleChange}
                 />
+                <label htmlFor="outlined-button-file">
+                    <Button
+                        variant="contained"
+                        component="label">
+                            Upload File
+                        <input type="file" id='imageFile' style={{ display: "none" }} onChange={this.fileSelectedHandler} />
+                    </Button>
+                 </label>
 
               </FormControl>
+              </div>
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose} color="primary" id='Button__add__width'>
               Cancel
             </Button>
-            <Button onClick={this.openSave} color="primary">
+            <Button onClick={this.openSave} color="primary" id='Button__add__width'>
               Ok
             </Button>
+            </div>
           </DialogActions>
         </Dialog>
       </div>
