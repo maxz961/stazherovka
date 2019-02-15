@@ -34,7 +34,6 @@ class ListItems extends React.Component {
     get_allposts = () => {
         axios.request().get(`/posts`)
         .then((response) => {
-            console.log('DATA', response)
             this.setState({
                 data: response.data
             })
@@ -66,7 +65,7 @@ class ListItems extends React.Component {
             </Link>);
        });
         return (
-            <div className='list__itemsblock'>
+            <div className='list__itemsblock flex__container'>
                 {ItemElem}
                 <DialogSelect notSave={this.notSave} saveClick={this.saveClick} token={token} propsHuck={this.propsHuck}/>
             </div>

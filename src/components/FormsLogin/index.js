@@ -59,7 +59,6 @@ class TextFields extends React.Component {
     
         axios.request().post('/login', data)
         .then((response) => {
-            console.log('LOG', response)
             if(response.data) {
             window.localStorage.setItem('rr_login', response.data.token)
             this.props.checkLogin(response.data)
@@ -114,12 +113,15 @@ class TextFields extends React.Component {
                 id="LoginPassword"
                 onChange={this.handleChange}
                 /><br />
+                <div className='input__style'>
                 <Button type="submit"
+                 fullWidth={true}
                  variant="outlined" 
                  color="primary"
                  onClick={this.handleSubmit}>
                     Вход
                 </Button>
+                </div>
             </form>
             </div>
     );

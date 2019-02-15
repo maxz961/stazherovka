@@ -19,7 +19,8 @@ import Chat from './pages/Chat/ChatItem'
 class App extends Component {
 
   state = {
-    tokenApp: window.localStorage.getItem('rr_login')
+    tokenApp: window.localStorage.getItem('rr_login'),
+    Users: ''
   }
 
   relogKey = () => {
@@ -34,18 +35,24 @@ class App extends Component {
     })
   }
 
+  saveName = (name) => {
+    this.setState({
+      ...this.state, Users: name
+    })
+  }
+
   render() {
-    const {tokenApp} = this.state
+    const {tokenApp, Users} = this.state
     return (
 
 
       <Router>
         <div>
-        <Tabs tokenApp={tokenApp}/>
+        <Tabs Users={Users} tokenApp={tokenApp} relogKey={this.relogKey}/>
           <Route exact path="/" component={Obautus} />
           <Route path="/Login" render={() => <Login tokenApp={tokenApp} relogkeyLogin={this.relogkeyLogin}/>} />
           <Route exact path="/Posts" component={Posts} />
-          <Route path="/Profile/:id" render={() => <Profile relogKey={this.relogKey}/>}/>
+          <Route path="/Profile/:id" render={() => <Profile saveName={this.saveName}/>}/>
           <Route path="/Registration" component={Registration} />
           <Route path={`/Posts/:post`} component={PostPage} />
           <Route path={`/Chat`} component={Chat} />

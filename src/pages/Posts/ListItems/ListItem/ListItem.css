@@ -1,3 +1,8 @@
 .list__item {
-    margin: 0 auto;
+    width: 400px;
+    margin: 10px;
+}
+
+.text_card h3 {
+    text-decoration: none;
 }

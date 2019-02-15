@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import axios from '../../axios.config'
 import FormsInputReg from '../FormsInputReg'
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+
 import './Forms.css'
 
 const styles = theme => ({
@@ -18,7 +20,8 @@ class TextFields extends React.Component {
         RegisterPassword: '',
         isBlockEmail: false,
         isBlockName: false,
-        isBlockPassword: false
+        isBlockPassword: false,
+        isBlock: false
     }
 
     handleChange = (target) => {
@@ -55,35 +58,51 @@ if(validEmail !== null && RegisterName.length >= 4 && RegisterPassword.length >=
             email: this.state.RegisterEmail,
             password: this.state.RegisterPassword,
         }
-        this.props.goTo('/Login')
         axios.request().post('/registration', data)
-        .then((response) => {
-            console.log(response)
-            this.props.history.push('/Login')
+        .then(response => {
+                if(response) {
+                console.log(response.status)
+                this.props.goTo('/Login')
+            }
+            else {
+                this.setState({
+                    isBlockEmail: true, isBlockName:true, isBlockPassword: true, isBlock: true
+                })
+            }
         })
-        .then((error) => {
-            console.log(error)
+        .catch(error => {
+            console.log('HI', error.response)
         })
     }
 }
 
   render() {
-    const {isBlockEmail, isBlockName, isBlockPassword} = this.state
+    const {isBlockEmail, isBlockName, isBlockPassword, isBlock} = this.state
     const { classes } = this.props;
     
 
     return (
         <div className='Tabs__style'>
+        <SnackbarContent
+        id={isBlock ? '' : 'hide__err'}
+        message={
+          'I love candy. I love cookies. I love cupcakes. \
+          I love cheesecake. I love chocolate.'
+        }
+      />
+        
             <form className={classes.container} noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
   
                 <FormsInputReg propsHuck={this.handleChange} isBlockEmail={isBlockEmail} isBlockName={isBlockName} isBlockPassword={isBlockPassword}/>
-
+                <div className='input__style'>
                 <Button type="submit"
+                 fullWidth={true}
                  variant="outlined" 
                  color="primary"
                  onClick={this.handleSubmit}>
                     Регестрация
                 </Button>
+                </div>
             </form>
             </div>
     );

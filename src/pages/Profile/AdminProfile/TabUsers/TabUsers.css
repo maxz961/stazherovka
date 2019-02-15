@@ -26,3 +26,18 @@
     margin-bottom: -50px;
     margin-top: 30px;
 }
+#adminpanel__list {
+    width: 100%;
+    height: 75vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.center__admintext {
+    text-align: center;
+}
+
+.logout {
+    float: right;
+    display: inline-block;
+}

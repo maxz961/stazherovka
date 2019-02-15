@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from '../../../../axios.config'
-import Button from '@material-ui/core/Button';
 
 import TabUsers from '../TabUsers'
 
@@ -31,6 +30,7 @@ class AdminProfile extends React.Component {
                 isAdmin: response.data.isAdmin,
                 newAdmin: response.data.isAdmin
             })
+            this.props.saveName(response.data.name)
         })
         .then((error) => {
             console.log(error)
@@ -51,15 +51,15 @@ class AdminProfile extends React.Component {
     render() {
         return (
             <div>
-                <h1>Страница админа</h1>
+                <h1 className='center__admintext'>Страница админа</h1>
                 <TabUsers />
-                <Button type="submit"
+                {/* <Button type="submit"
                     variant="outlined" 
                     color="primary"
                     onClick={this.handleSubmit}
                     >
                     Выход
-                </Button>
+                </Button> */}
             </div>
         )
     }

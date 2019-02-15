@@ -119,6 +119,7 @@ class BottomAppBar extends React.Component {
         email: email,
         password: password
       }
+      debugger;
       axios.request().post(`/registration`, data)
       .then(res =>{
         console.log(res)
@@ -139,7 +140,7 @@ render() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Paper square className={classes.paper} id='chat__list'>
+      <Paper square className={classes.paper} id='adminpanel__list'>
         <Typography className={classes.text} variant="h5" gutterBottom>
           Таблица Юзеров
         </Typography>

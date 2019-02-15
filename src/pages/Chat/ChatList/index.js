@@ -3,6 +3,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 
+import baseApiUrl from '../../../baseaApiUrl'
+
 
 class ChatList extends React.Component {
 
@@ -24,20 +26,21 @@ class ChatList extends React.Component {
 
 
     render() {
-        const data = this.state.message.map(item => {if(item.message.length > 0)
+        const img = 'https://banner2.kisspng.com/20180630/bo/kisspng-user-profile-computer-icons-button-boy-avatar-5b3823c89f5112.6571683615304058326526.jpg'
+        const data = this.state.message.map((item, index) => {if(item.message.length > 0)
             return (
-            <Fragment>
+            <Fragment key={index}>
               <ListItem button src={item.avatar}>
-                <Avatar alt="Profile Picture"/>
+                <Avatar alt="Profile Picture" src={item.avatar !== undefined ? `${baseApiUrl}/uploads/${item.avatar}` : img}/>
                 <ListItemText primary={item.name} secondary={item.message} />
               </ListItem>
             </Fragment>
             )
         })
         return (
-            <ul>
+            <div>
                 {data}
-            </ul>
+            </div>
         )
     }
 }

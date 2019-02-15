@@ -41,20 +41,22 @@ class DeletePage extends React.Component {
             </IconButton>
 
         <Dialog
+          maxWidth='lg'
           disableBackdropClick
           disableEscapeKeyDown
           open={this.state.open}
           onClose={this.handleClose}
         >
           <DialogTitle className='open__dialogtext'>Вы действительно хотите удалить свой пост?</DialogTitle>
-
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose}  id='Button__add__width' color="primary">
               Cancel
             </Button>
-            <Button onClick={this.openSave} color="primary">
+            <Button onClick={this.openSave}  id='Button__add__width' color="primary">
               Ok
             </Button>
+            </div>
           </DialogActions>
         </Dialog>
       </div>

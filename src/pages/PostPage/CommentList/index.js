@@ -3,8 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
 import DeleteComment from '../DeleteComment'
@@ -39,14 +37,13 @@ class CommentList extends React.Component {
 
   render() {
     const author = this.props.item.author
-    console.log('author', author)
   const { classes, item } = this.props;
   return (
     <List className={classes.root}>
       <ListItem alignItems="flex-start">
-        <ListItemAvatar>
+        {/* <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
+        </ListItemAvatar> */}
         <ListItemText
           primary={item.author === 'admin' ? 'Admin' : 'Users'}
           secondary={

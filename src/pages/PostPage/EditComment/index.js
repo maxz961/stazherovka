@@ -48,13 +48,14 @@ handleChangeEditComm = (e) => {
   render() {
     const { classes, author} = this.props;
     const id = window.localStorage.getItem('rr_id')
+    console.log('ID TEST', author.id)
 
     return (
       <div>
                 <Fab 
                 size='large' onClick={this.handleClickOpen}
                  color="secondary" aria-label="Edit" className={classes.fab}
-                  id={author === id ? '' : 'delete__butoon__block'}
+                  id={author._id === id ? '' : 'delete__butoon__block'}
                   >
                     <Icon fontSize="small">edit_icon</Icon>
                 </Fab>
@@ -71,7 +72,7 @@ handleChangeEditComm = (e) => {
               <FormControl fullWidth={true} className={classes.formControl}>
                     <TextField
                     rows='7'
-                    id="textareaComm"
+                    id="editComment"
                     label="Оставьте комментарий"
                     placeholder="Placeholder"
                     multiline

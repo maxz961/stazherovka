@@ -23,7 +23,8 @@ function ListItem(props) {
   console.log('img', image)
   
   return (
-    <Card className='list__item'>
+    <div className='list__item text_card'>
+    <Card>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -34,9 +35,9 @@ function ListItem(props) {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-          <p>{created_user === 'admin' ? 'Admin' : 'Users'}</p>
+          <Typography gutterBottom variant="h5" component="h3">
             {title}
+            <p className='text_card'>{created_user === 'admin' ? 'Admin' : 'Users'}</p>
           </Typography>
           <Typography component="p">
             {description}
@@ -45,6 +46,7 @@ function ListItem(props) {
       </CardActionArea>
    
     </Card>
+    </div>
   );
 }
 

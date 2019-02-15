@@ -32,6 +32,7 @@ class DialogSelect extends React.Component {
 
   fileSelectedHandler = e => {
     this.props.editImage(e.target.files[0])
+    console.log('IMG',e.target.files[0])
   }
 
 handleChangeEdit = (e) => {
@@ -112,7 +113,7 @@ handleChangeEdit = (e) => {
                         variant="contained"
                         component="label">
                             Upload File
-                        <input type="file" id='imageFile' style={{ display: "none" }} onChange={this.fileSelectedHandler} />
+                        <input value='' type="file" id='imageFile' style={{ display: "none" }} onChange={this.fileSelectedHandler} />
                     </Button>
                  </label>
 

@@ -29,7 +29,6 @@ class AdminSelect extends React.Component {
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
     this.props.adminJump(event.target)
-    console.log('TARGET', event.target.value)
   };
 
   render() {

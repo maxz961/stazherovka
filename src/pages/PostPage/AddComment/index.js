@@ -1,7 +1,6 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import axios from '../../../axios.config'
 
 
 import './AddComment.css'
@@ -60,9 +59,11 @@ class AddComment extends React.Component {
       return (
            <div>
                <h1 className='add__centertext__log'>Войдите что бы написать комментарий</h1>
+               <div className='btn__notlogged'>
                     <Button onClick={() => this.toGo()} variant="contained" color="primary" fullWidth={true}>
                         Войти
                     </Button>
+                </div>
         </div>
       )
     }

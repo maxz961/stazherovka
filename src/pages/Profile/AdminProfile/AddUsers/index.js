@@ -37,7 +37,6 @@ class DialogSelect extends React.Component {
   };
 
   adminJump = (target) => {
-    console.log('TARGET2', target.value);
     
     this.setState({
       target: target.value
@@ -114,6 +113,7 @@ class DialogSelect extends React.Component {
           <DialogTitle className='open__dialogtext'>Добавление Юзера</DialogTitle>
           <DialogContent>
             <form className={classes.container}>
+            <div id='form__margin__center'>
               <FormControl className={classes.formControl}>
 
               <TextField
@@ -150,15 +150,18 @@ class DialogSelect extends React.Component {
                 /><br />
 
               </FormControl>
+              </div>
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose} color="primary" id='Button__add__width'>
               Cancel
             </Button>
-            <Button onClick={this.openSaveEdit} color="primary">
+            <Button onClick={this.openSaveEdit} color="primary" id='Button__add__width'>
               Ok
             </Button>
+            </div>
           </DialogActions>
         </Dialog>
       </div>

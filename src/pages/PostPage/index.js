@@ -1,7 +1,6 @@
 import React from 'react'
 import ItemCard from './ItemCard';
 import axios from '../../axios.config'
-import {Redirect } from 'react-router'
 
 
 import CommentList from './CommentList'
@@ -14,7 +13,8 @@ class PostPage extends React.Component {
   state = {
     data: [],
     comments: [],
-    textareaComm: ''
+    textareaComm: '',
+    editComment: ''
   }
 
   propsHuckEditComm = (target) => { 
@@ -24,12 +24,13 @@ class PostPage extends React.Component {
   }
 
   openSaveEditComm = (id) => {
-    console.log('Редактирование комментария', this.state.textareaComm)
-    const content = this.state.textareaComm
+    console.log('Редактирование комментария', this.state.editComment)
+    const content = this.state.editComment
     const idPost = this.props.match.params.post
-    axios.request().request().put(`/post/${idPost}/comment/${id}`, {content})
+    axios.request().put(`/post/${idPost}/comment/${id}`, {content})
     .then((response) => {
       console.log(response)
+      this.componentDidMount()
     })
     .then((error) => {
         console.log(error)
@@ -94,6 +95,10 @@ toGoLogin = (loginpage) => {
   this.props.history.push(loginpage)
 }
 
+saveEditUpdate = () => {
+  this.componentDidMount()
+}
+
   componentDidMount() {
     console.log('ZAPUSK');
     
@@ -111,7 +116,7 @@ toGoLogin = (loginpage) => {
     })
     return (
       <div className='post__page__body'>
-        <ItemCard goTo={this.goTo} data={data}/>
+        <ItemCard goTo={this.goTo} data={data} saveEditUpdate={this.saveEditUpdate}/>
         <div className='comment__list'>
         {comments.length > 0 ? itemComment : <h1>Нет комментариев</h1>}
         </div>

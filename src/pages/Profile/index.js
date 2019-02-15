@@ -1,11 +1,12 @@
 import React from 'react'
-import Button from '@material-ui/core/Button';
 import {Redirect } from 'react-router'
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import OpenDialog from './OpenDialog'
 import axios from '../../axios.config'
 import Admin from './AdminProfile/Admin'
+import baseApiUrl from '../../baseaApiUrl'
+
 import './Profile.css'
 
 class Profile extends React.Component {
@@ -18,7 +19,8 @@ class Profile extends React.Component {
         isAdmin: false,
         newAdmin: false,
         imageFile: '',
-        password: ''
+        password: '',
+        imagePath: ''
     }
 
     // checkUsers = (login) => {
@@ -26,10 +28,10 @@ class Profile extends React.Component {
         
     // }
 
-    handleSubmit = () => {
-        window.localStorage.clear()
-        this.props.relogKey()
-    }
+    // handleSubmit = () => {
+    //     window.localStorage.clear()
+    //     this.props.relogKey()
+    // }
 
     handleChange = (target) => {
         this.setState({ [target.id]: target.value})
@@ -38,14 +40,15 @@ class Profile extends React.Component {
 
     saveClick = () => {
         const {nameProfile, infoProfile, imageFile} = this.state
-        const id = window.localStorage.getItem('rr_login')
+        const id = window.localStorage.getItem('rr_id')
         const fd = new FormData()
       
         fd.append('name', nameProfile)
         fd.append('email', infoProfile)
         fd.append('imageFile', imageFile)
 
-        axios.request().put(`user/${id}`)
+
+        axios.request().put(`user/${id}`, fd)
         .then(res=>{
             console.log(res)
             this.componentDidMount()
@@ -69,18 +72,18 @@ class Profile extends React.Component {
     }
 
     get_profile = (id) => {
-        console.log('IDGET', id);
         axios.request().get(`/user/${id}`)
         .then((response) => {
-            console.log('RABOTAET',response)
             this.setState({
                 oldName: response.data.name,
                 oldInfo: response.data.email,
                 nameProfile: response.data.name,
                 infoProfile: response.data.email,
                 isAdmin: response.data.isAdmin,
-                newAdmin: response.data.isAdmin
+                newAdmin: response.data.isAdmin,
+                imagePath: response.data.imagePath
             })
+            this.props.saveName(response.data.name)
         })
         .then((error) => {
             console.log(error)
@@ -89,9 +92,6 @@ class Profile extends React.Component {
 
     componentDidMount() {
         const id = window.localStorage.getItem('rr_id')
-        const token = window.localStorage.getItem('rr_login')
-        console.log('ID', id)
-        console.log('TOKEN', token);
         
         // this.get_profile(id, token)
         if(id ) {
@@ -99,10 +99,15 @@ class Profile extends React.Component {
         }
     }
 
+    saveName = (name) => {
+        this.props.saveName(name)
+    }
+
 
     render() {    
-        const {nameProfile, infoProfile, oldName, oldInfo, isAdmin, newAdmin} = this.state
+        const {nameProfile, infoProfile, oldName, oldInfo, isAdmin, newAdmin, imagePath} = this.state
         const token = window.localStorage.getItem('rr_login')
+        const img = 'https://banner2.kisspng.com/20180630/bo/kisspng-user-profile-computer-icons-button-boy-avatar-5b3823c89f5112.6571683615304058326526.jpg'
 
 
         if(newAdmin === false) {
@@ -113,7 +118,7 @@ class Profile extends React.Component {
             <div className="Pages__center">
                 <h1>Страница профиля</h1>
                 <Grid container justify="center" alignItems="center" className="bg1">
-                    <Avatar alt="Remy Sharp" src="https://banner2.kisspng.com/20180630/bo/kisspng-user-profile-computer-icons-button-boy-avatar-5b3823c89f5112.6571683615304058326526.jpg"
+                    <Avatar alt="Remy Sharp" src={imagePath ? `${baseApiUrl}/uploads/${imagePath}` : img}
                      id='Prof__avatar' />
                 </Grid>
                 <h1>{oldName}</h1>
@@ -125,20 +130,22 @@ class Profile extends React.Component {
                   saveImgState={this.saveImgState}
                   />
                   
-
+                {/* <div className='Profile__button'>
                 <Button type="submit"
+                    fullWidth={true}
                     variant="outlined" 
                     color="primary"
                     onClick={this.handleSubmit}
                     >
                     Выход
                 </Button>
+                </div> */}
             </div>
         )
         }
 
         if(newAdmin === true) {
-            return token === null ? ( <Redirect to="/"/>) : ( <Admin handleSubmit={this.handleSubmit} />)
+            return token === null ? ( <Redirect to="/"/>) : ( <Admin saveName={this.saveName}/>)
                    
         }
     }

@@ -55,6 +55,7 @@ class Chat extends React.Component {
         super(props);
         this.state = {
             arguments: '',
+            online: [],
            data: {
             name: 'User',
             message: '',
@@ -77,6 +78,10 @@ class Chat extends React.Component {
         const userId = window.localStorage.getItem('rr_id')   
         const message = this.state.arguments
         const data = {userId, message}
+        
+        // const element = document.getElementById('jump__div');
+        // element.scrollIntoView({ block: 'end',  behavior: 'smooth' });
+
         this.socket.emit('send-from-user', data, () => {})
         this.setState({
           arguments: ''
@@ -87,6 +92,7 @@ class Chat extends React.Component {
 
     componentDidMount() {
         const id = window.localStorage.getItem('rr_id')
+        const userId = id;
         axios.request().get(`user/${id}`)
         .then(res=>{
             console.log(res)
@@ -119,9 +125,10 @@ class Chat extends React.Component {
         .catch(err=>{
             console.log(err);        
         })
+
+        this.socket.emit('username', userId)
         
         this.socket.on('new message', data => {
-          console.log('data', data)
             const updatedName = {
                 ...this.state.data, 
                 name: data.name,
@@ -133,12 +140,22 @@ class Chat extends React.Component {
         })
 
         this.socket.on('username-result', res => {
-            console.log('RES', res)
+            this.setState({
+                online: res
+            })
+        })
+
+        this.socket.on('user left', data => {
+            console.log('LEFT', data)
         })
     }
+
+
+
+
     render() {
         const {classes} = this.props
-        console.log('soket',this.state)
+        const {online} = this.state
         return (
             <div>
                 <h1 className='h1__chat'>Страница чата</h1>
@@ -151,8 +168,9 @@ class Chat extends React.Component {
             <ChatList data={this.state.data}/>
 
         </List>
+        <div id='jump__div'></div>
       </Paper> 
-      <ChatConnectUsers/>
+      <ChatConnectUsers online={online}/>
       </div> 
       <form className='form__chat' noValidate autoComplete="off" onSubmit={e => e.preventDefault()}>
                 <div className='input__chat__div'>

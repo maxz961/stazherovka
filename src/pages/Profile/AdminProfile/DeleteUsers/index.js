@@ -42,12 +42,14 @@ class DeleteUsers extends React.Component {
           <DialogTitle className='open__dialogtext'>Вы действительно хотите удалить этого пользователя?</DialogTitle>
 
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <div id='Button__Add__margin'>
+            <Button onClick={this.handleClose} color="primary" id='Button__add__width'>
               Cancel
             </Button>
-            <Button onClick={this.openSave} color="primary">
+            <Button onClick={this.openSave} color="primary" id='Button__add__width'>
               Ok
             </Button>
+            </div>
           </DialogActions>
         </Dialog>
       </div>

@@ -1,5 +1,6 @@
 .input__style {
     width: 500px;
+    margin: 0 auto;
 }
 
 .MuiButtonBase-root-58 {
@@ -12,6 +13,13 @@
 
 .input__button {
     margin-bottom: 30px;
+}
+
+#hide__err {
+    display: none;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 @media only screen and (max-width : 600px) {

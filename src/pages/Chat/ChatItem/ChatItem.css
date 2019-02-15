@@ -3,13 +3,13 @@
 }
 
 .form__chat {
-    margin: 0 auto;
     display: block;
+    width: 75%;
 }
 
 .input__chat__div {
+    width:90%;
     margin: 0 auto;
-    width: 40%;
 }
 
 .input__chat {
@@ -57,5 +57,13 @@
 #connect__list {
     float: right;
     display: inline-block;
-    width: 20%;
+    width: 25%;
+}
+
+.text__connect {
+    text-align: center;
+}
+
+#jump__div {
+   
 }

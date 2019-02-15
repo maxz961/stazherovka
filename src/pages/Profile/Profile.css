@@ -15,3 +15,8 @@
 #p__profile {
     margin-bottom: 50px;
 }
+
+.Profile__button {
+    width: 30%;
+    margin: 0 auto;
+}
